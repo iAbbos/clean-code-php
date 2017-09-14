@@ -1959,5 +1959,7 @@ function showList($employees)
  * ![cn](https://raw.githubusercontent.com/gosquared/flags/master/flags/flags/shiny/24/China.png) **Китайский:**
    * [yangweijie/clean-code-php](https://github.com/yangweijie/clean-code-php)
    * [php-cpm/clean-code-php](https://github.com/php-cpm/clean-code-php)
+ * ![ru](https://raw.githubusercontent.com/gosquared/flags/master/flags/flags/shiny/24/Russia.png) **Русский:**
+   * [peter-gribanov/clean-code-php](https://github.com/peter-gribanov/clean-code-php)
 
 **[⬆ вернуться к началу](#table-of-contents)**
