@@ -1,37 +1,39 @@
-# Clean Code PHP
+# Чистый код на PHP
 
-## Table of Contents
+## Содержание
 
-  1. [Introduction](#introduction)
-  2. [Variables](#variables)
-     * [Use meaningful and pronounceable variable names](#use-meaningful-and-pronounceable-variable-names)
-     * [Use the same vocabulary for the same type of variable](#use-the-same-vocabulary-for-the-same-type-of-variable)
-     * [Use searchable names (part 1)](#use-searchable-names-part-1)
-     * [Use searchable names (part 2)](#use-searchable-names-part-2)
-     * [Use explanatory variables](#use-explanatory-variables)
-     * [Avoid Mental Mapping](#avoid-mental-mapping)
-     * [Don't add unneeded context](#dont-add-unneeded-context)
-     * [Use default arguments instead of short circuiting or conditionals](#use-default-arguments-instead-of-short-circuiting-or-conditionals)
-  3. [Functions](#functions)
-     * [Function arguments (2 or fewer ideally)](#function-arguments-2-or-fewer-ideally)
-     * [Functions should do one thing](#functions-should-do-one-thing)
-     * [Function names should say what they do](#function-names-should-say-what-they-do)
-     * [Functions should only be one level of abstraction](#functions-should-only-be-one-level-of-abstraction)
-     * [Don't use flags as function parameters](#dont-use-flags-as-function-parameters)
-     * [Avoid Side Effects](#avoid-side-effects)
-     * [Don't write to global functions](#dont-write-to-global-functions)
-     * [Don't use a Singleton pattern](#dont-use-a-singleton-pattern)
-     * [Encapsulate conditionals](#encapsulate-conditionals)
-     * [Avoid negative conditionals](#avoid-negative-conditionals)
-     * [Avoid conditionals](#avoid-conditionals)
-     * [Avoid type-checking (part 1)](#avoid-type-checking-part-1)
-     * [Avoid type-checking (part 2)](#avoid-type-checking-part-2)
-     * [Remove dead code](#remove-dead-code)
-  4. [Objects and Data Structures](#objects-and-data-structures)
-     * [Use object encapsulation](#use-object-encapsulation)
-     * [Make objects have private/protected members](#make-objects-have-privateprotected-members)
-  5. [Classes](#classes)
-     * [Prefer composition over inheritance](#prefer-composition-over-inheritance)
+  1. [Введение](#introduction)
+  2. [Переменные](#variables)
+     * [Используйте значимые и произносимые имена переменных](#use-meaningful-and-pronounceable-variable-names)
+     * [Для одного типа переменных используйте единый словарь](#use-the-same-vocabulary-for-the-same-type-of-variable)
+     * [Используйте имена, по которым удобно искать (часть 1)](#use-searchable-names-part-1)
+     * [Используйте имена, по которым удобно искать (часть 2)](#use-searchable-names-part-2)
+     * [Используйте пояснительные переменные](#use-explanatory-variables)
+     * [Избегайте глубоких вложений (часть 1)]()
+     * [Избегайте глубоких вложений (часть 2)]()
+     * [Избегайте ментального сопоставления](#avoid-mental-mapping)
+     * [Не добавляйте ненужный контекст](#dont-add-unneeded-context)
+     * [Вместо сокращённых или условных используйте аргументы по умолчанию](#use-default-arguments-instead-of-short-circuiting-or-conditionals)
+  3. [Функции](#functions)
+     * [Аргументы функций (в идеале два или меньше)](#function-arguments-2-or-fewer-ideally)
+     * [Функции должны делать что-то одно](#functions-should-do-one-thing)
+     * [Имена функций должны быть говорящими](#function-names-should-say-what-they-do)
+     * [Функции должны быть лишь одним уровнем абстракции](#functions-should-only-be-one-level-of-abstraction)
+     * [Не используйте флаги в качестве параметров функций](#dont-use-flags-as-function-parameters)
+     * [Избегайте побочных эффектов](#avoid-side-effects)
+     * [Не пишите в глобальные функции](#dont-write-to-global-functions)
+     * [Не используйте шаблон Singleton](#dont-use-a-singleton-pattern)
+     * [Инкапсулирование условных выражений](#encapsulate-conditionals)
+     * [Избегайте негативных условных выражений](#avoid-negative-conditionals)
+     * [Избегайте условных выражений](#avoid-conditionals)
+     * [Избегайте проверки типов (часть 1))](#avoid-type-checking-part-1)
+     * [Избегайте проверки типов (часть 2)](#avoid-type-checking-part-2)
+     * [Убирайте мёртвый код](#remove-dead-code)
+  4. [Объекты и структуры данных](#objects-and-data-structures)
+     * [Используйте инкапсуляцию объектов](#use-object-encapsulation)
+     * [У объектов должны быть private/protected компоненты](#make-objects-have-privateprotected-members)
+  5. [Классы](#classes)
+     * [Композиция лучше наследования](#prefer-composition-over-inheritance)
      * [Avoid fluent interfaces](#avoid-fluent-interfaces)
   6. [SOLID](#solid)
      * [Single Responsibility Principle (SRP)](#single-responsibility-principle-srp)
@@ -40,42 +42,37 @@
      * [Interface Segregation Principle (ISP)](#interface-segregation-principle-isp)
      * [Dependency Inversion Principle (DIP)](#dependency-inversion-principle-dip)
   7. [Don’t repeat yourself (DRY)](#dont-repeat-yourself-dry)
-  8. [Translations](#translations)
+  8. [Переводы](#translations)
 
-## Introduction
+## Введение
 
-Software engineering principles, from Robert C. Martin's book
-[*Clean Code*](https://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882),
-adapted for PHP. This is not a style guide. It's a guide to producing
-readable, reusable, and refactorable software in PHP.
+Это принципы разработки ПО, взятые из книги [*Clean Code*](https://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882) Роберта Мартина и адаптированные для PHP. Это руководство не по стилям программирования, а по созданию читабельного, многократно используемого и пригодного для рефакторинга кода на PHP.
 
-Not every principle herein has to be strictly followed, and even fewer will be universally 
-agreed upon. These are guidelines and nothing more, but they are ones codified over many 
-years of collective experience by the authors of *Clean Code*.
+Не каждый из этих принципов должен строго соблюдаться, и ещё с меньшим количеством все будут согласны. Это лишь рекомендации, не более, но все они кодифицированы в многолетнем коллективном опыте автора *Clean Code*.
 
-Inspired from [clean-code-javascript](https://github.com/ryanmcdermott/clean-code-javascript)
+Вдохновленный [clean-code-javascript](https://github.com/ryanmcdermott/clean-code-javascript)
 
-## Variables
+## Переменные
 
-### Use meaningful and pronounceable variable names
+### Используйте значимые и произносимые имена переменных
 
-**Bad:**
+**Плохо:**
 
 ```php
 $ymdstr = $moment->format('y-m-d');
 ```
 
-**Good:**
+**Хорошо:**
 
 ```php
 $currentDate = $moment->format('y-m-d');
 ```
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ вернуться к началу](#table-of-contents)**
 
-### Use the same vocabulary for the same type of variable
+### Для одного типа переменных используйте единый словарь
 
-**Bad:**
+**Плохо:**
 
 ```php
 getUserInfo();
@@ -84,37 +81,34 @@ getUserRecord();
 getUserProfile();
 ```
 
-**Good:**
+**Хорошо:**
 
 ```php
 getUser();
 ```
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ вернуться к началу](#table-of-contents)**
 
-### Use searchable names (part 1)
+### Используйте имена, по которым удобно искать (часть 1)
 
-We will read more code than we will ever write. It's important that the code we do write is 
-readable and searchable. By *not* naming variables that end up being meaningful for 
-understanding our program, we hurt our readers.
-Make your names searchable.
+Мы прочитаем больше кода, чем когда-либо напишем. Поэтому важно писать такой код, который будет читабелен и удобен для поиска. Но давая переменным имена, бесполезные для понимания нашей программы, мы мешаем будущим читателям. Используйте такие имена, по которым удобно искать.
 
-**Bad:**
+**Плохо:**
 
 ```php
 // What the heck is 448 for?
 $result = $serializer->serialize($data, 448);
 ```
 
-**Good:**
+**Хорошо:**
 
 ```php
 $json = $serializer->serialize($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 ```
 
-### Use searchable names (part 2)
+### Используйте имена, по которым удобно искать (часть 2)
 
-**Bad:**
+**Плохо:**
 
 ```php
 // What the heck is 4 for?
@@ -123,7 +117,7 @@ if ($user->access & 4) {
 }
 ```
 
-**Good:**
+**Хорошо:**
 
 ```php
 class User
@@ -139,11 +133,11 @@ if ($user->access & User::ACCESS_UPDATE) {
 }
 ```
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ вернуться к началу](#table-of-contents)**
 
-### Use explanatory variables
+### Используйте пояснительные переменные
 
-**Bad:**
+**Плохо:**
 
 ```php
 $address = 'One Infinite Loop, Cupertino 95014';
@@ -153,9 +147,9 @@ preg_match($cityZipCodeRegex, $address, $matches);
 saveCityZipCode($matches[1], $matches[2]);
 ```
 
-**Not bad:**
+**Лучше:**
 
-It's better, but we are still heavily dependent on regex.
+Так лучше, но мы всё ещё сильно зависим от регулярного выражения.
 
 ```php
 $address = 'One Infinite Loop, Cupertino 95014';
@@ -166,9 +160,9 @@ list(, $city, $zipCode) = $matches;
 saveCityZipCode($city, $zipCode);
 ```
 
-**Good:**
+**Хорошо:**
 
-Decrease dependence on regex by naming subpatterns.
+С помощью именования подпаттернов снижаем зависимость от регулярного выражения.
 
 ```php
 $address = 'One Infinite Loop, Cupertino 95014';
@@ -178,14 +172,13 @@ preg_match($cityZipCodeRegex, $address, $matches);
 saveCityZipCode($matches['city'], $matches['zipCode']);
 ```
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ вернуться к началу](#table-of-contents)**
 
-### Avoid nesting too deeply and return early
+### Избегайте глубоких вложений (часть 1)
 
-Too many if else statemetns can make your code hard to follow. Explicit is better
-than implicit.
+Слишком много `if/else` утверждений может сделать ваш код трудно сопровождаемым. Явное лучше, неявного.
 
-**Bad:**
+**Плохо:**
 
 ```php
 function isShopOpen($day)
@@ -211,7 +204,7 @@ function isShopOpen($day)
 }
 ```
 
-**Good:**
+**Хорошо:**
 
 ```php
 function isShopOpen($day)
@@ -228,7 +221,11 @@ function isShopOpen($day)
 }
 ```
 
-**Bad:**
+**[⬆ вернуться к началу](#table-of-contents)**
+
+### Избегайте глубоких вложений (часть 2)
+
+**Плохо:**
 
 ```php
 function fibonacci($n)
@@ -249,7 +246,7 @@ function fibonacci($n)
 }
 ```
 
-**Good:**
+**Хорошо:**
 
 ```php
 function fibonacci($n)
@@ -270,14 +267,13 @@ function fibonacci($n)
 }
 ```
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ вернуться к началу](#table-of-contents)**
 
-### Avoid Mental Mapping
+### Избегайте ментального сопоставления
 
-Don’t force the reader of your code to translate what the variable means.
-Explicit is better than implicit.
+Не заставляйте тех, кто будет читать ваш код, переводить значения переменных. Лучше писать явно, чем неявно.
 
-**Bad:**
+**Плохо:**
 
 ```php
 $l = ['Austin', 'New York', 'San Francisco'];
@@ -294,7 +290,7 @@ for ($i = 0; $i < count($l); $i++) {
 }
 ```
 
-**Good:**
+**Хорошо:**
 
 ```php
 $locations = ['Austin', 'New York', 'San Francisco'];
@@ -309,14 +305,13 @@ foreach ($locations as $location) {
 }
 ```
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ вернуться к началу](#table-of-contents)**
 
-### Don't add unneeded context
+### Не добавляйте ненужный контекст
 
-If your class/object name tells you something, don't repeat that in your
-variable name.
+Если имя вашего класса/объекта с чем-то у вас ассоциируется, не проецируйте эту ассоциацию на имя переменной.
 
-**Bad:**
+**Плохо:**
 
 ```php
 class Car
@@ -329,7 +324,7 @@ class Car
 }
 ```
 
-**Good:**
+**Хорошо:**
 
 ```php
 class Car
@@ -342,13 +337,13 @@ class Car
 }
 ```
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ вернуться к началу](#table-of-contents)**
 
-### Use default arguments instead of short circuiting or conditionals
+### Вместо сокращённых или условных используйте аргументы по умолчанию
 
-**Not good:**
+**Не хорошо:**
 
-This is not good because `$breweryName` can be `NULL`.
+Это не хорошо потому, что переменная `$breweryName` может быть `NULL`.
 
 ```php
 function createMicrobrewery($breweryName = 'Hipster Brew Co.')
@@ -357,9 +352,9 @@ function createMicrobrewery($breweryName = 'Hipster Brew Co.')
 }
 ```
 
-**Not bad:**
+**Лучше:**
 
-This opinion is more understandable than the previous version, but it better controls the value of the variable.
+Это решение мение понятно, чем предыдущая версия, но лучше контролирует значение переменной.
 
 ```php
 function createMicrobrewery($name = null)
@@ -369,9 +364,9 @@ function createMicrobrewery($name = null)
 }
 ```
 
-**Good:**
+**Хорошо:**
 
-If you support only PHP 7+, then you can use [type hinting](http://php.net/manual/en/functions.arguments.php#functions.arguments.type-declaration) and be sure that the `$breweryName` will not be `NULL`.
+Если вы используете только PHP 7+, то вы можете использовать [контроль типов](http://php.net/manual/en/functions.arguments.php#functions.arguments.type-declaration) и быть увереным, что переменная `$breweryName` никогда не будет `NULL`.
 
 ```php
 function createMicrobrewery(string $breweryName = 'Hipster Brew Co.')
@@ -380,22 +375,17 @@ function createMicrobrewery(string $breweryName = 'Hipster Brew Co.')
 }
 ```
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ вернуться к началу](#table-of-contents)**
 
-## Functions
+## Функции
 
-### Function arguments (2 or fewer ideally)
+### Аргументы функций (в идеале два или меньше)
 
-Limiting the amount of function parameters is incredibly important because it makes 
-testing your function easier. Having more than three leads to a combinatorial explosion 
-where you have to test tons of different cases with each separate argument.
+Крайне важно ограничивать количество параметров функций, потому что это упрощает тестирование. Больше трёх аргументов ведёт к «комбинаторному взрыву», когда вам нужно протестировать кучу разных случаев применительно к каждому аргументу.
 
-Zero arguments is the ideal case. One or two arguments is ok, and three should be avoided. 
-Anything more than that should be consolidated. Usually, if you have more than two 
-arguments then your function is trying to do too much. In cases where it's not, most 
-of the time a higher-level object will suffice as an argument.
+Идеальный вариант — вообще без аргументов. Один-два тоже нормально, но трёх нужно избегать. Если их получается больше, то нужно объединять, чтобы уменьшить количество. Обычно если у вас больше двух аргументов, то функция делает слишком много. В тех случаях, когда это не так, чаще всего в качестве аргумента достаточно использовать более высокоуровневый объект.
 
-**Bad:**
+**Плохо:**
 
 ```php
 function createMenu($title, $body, $buttonText, $cancellable)
@@ -404,7 +394,7 @@ function createMenu($title, $body, $buttonText, $cancellable)
 }
 ```
 
-**Good:**
+**Хорошо:**
 
 ```php
 class MenuConfig
@@ -427,17 +417,14 @@ function createMenu(MenuConfig $config)
 }
 ```
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ вернуться к началу](#table-of-contents)**
 
-### Functions should do one thing
+### Функции должны делать что-то одно
 
-This is by far the most important rule in software engineering. When functions do more 
-than one thing, they are harder to compose, test, and reason about. When you can isolate 
-a function to just one action, they can be refactored easily and your code will read much 
-cleaner. If you take nothing else away from this guide other than this, you'll be ahead 
-of many developers.
+Это, безусловно, самое важное правило в разработке ПО. Когда функции делают больше одной вещи, их труднее составлять, тестировать и обосновывать. А если вы можете наделить функции только какими-то одиночными действиями, то их будет легче рефакторить, а ваш код станет гораздо чище. Даже если вы не будете следовать никакой другой рекомендации, кроме этой, то всё равно опередите многих других разработчиков.
 
-**Bad:**
+**Плохо:**
+
 ```php
 function emailClients($clients)
 {
@@ -450,7 +437,7 @@ function emailClients($clients)
 }
 ```
 
-**Good:**
+**Хорошо:**
 
 ```php
 function emailClients($clients)
@@ -472,11 +459,11 @@ function isClientActive($client)
 }
 ```
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ вернуться к началу](#table-of-contents)**
 
-### Function names should say what they do
+### Имена функций должны быть говорящими
 
-**Bad:**
+**Плохо:**
 
 ```php
 class Email
@@ -494,7 +481,7 @@ $message = new Email(...);
 $message->handle();
 ```
 
-**Good:**
+**Хорошо:**
 
 ```php
 class Email 
@@ -512,15 +499,13 @@ $message = new Email(...);
 $message->send();
 ```
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ вернуться к началу](#table-of-contents)**
 
-### Functions should only be one level of abstraction
+### Функции должны быть лишь одним уровнем абстракции
 
-When you have more than one level of abstraction your function is usually
-doing too much. Splitting up functions leads to reusability and easier
-testing.
+Если у вас несколько уровней абстракции, то на функцию возложено слишком много задач. Разбиение функций позволяет многократно использовать код и облегчает тестирование.
 
-**Bad:**
+**Плохо:**
 
 ```php
 function parseBetterJSAlternative($code)
@@ -548,9 +533,9 @@ function parseBetterJSAlternative($code)
 }
 ```
 
-**Bad too:**
+**Тоже плохо:**
 
-We have carried out some of the functionality, but the `parseBetterJSAlternative()` function is still very complex and not testable.
+Мы выполнили некоторые функции, но функция `parseBetterJSAlternative()` все еще очень сложна и не тестируема.
 
 ```php
 function tokenize($code)
@@ -590,9 +575,9 @@ function parseBetterJSAlternative($code)
 }
 ```
 
-**Good:**
+**Хорошо:**
 
-The best solution is move out the dependencies of `parseBetterJSAlternative()` function.
+Лучшим решением является вынесение всех зависимостей из функции `parseBetterJSAlternative()`.
 
 ```php
 class Tokenizer
@@ -650,15 +635,13 @@ class BetterJSAlternative
 }
 ```
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ вернуться к началу](#table-of-contents)**
 
-### Don't use flags as function parameters
+### Не используйте флаги в качестве параметров функций
 
-Flags tell your user that this function does more than one thing. Functions should 
-do one thing. Split out your functions if they are following different code paths 
-based on a boolean.
+Флаги говорят вашим пользователям, что функции делают больше одной вещи. А они должны делать что-то одно. Разделяйте свои функции, если они идут по разным ветвям кода в соответствии с булевой логикой.
 
-**Bad:**
+**Плохо:**
 
 ```php
 function createFile($name, $temp = false)
@@ -671,7 +654,7 @@ function createFile($name, $temp = false)
 }
 ```
 
-**Good:**
+**Хорошо:**
 
 ```php
 function createFile($name)
@@ -685,25 +668,17 @@ function createTempFile($name)
 }
 ```
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ вернуться к началу](#table-of-contents)**
 
-### Avoid Side Effects
+### Избегайте побочных эффектов
 
-A function produces a side effect if it does anything other than take a value in and 
-return another value or values. A side effect could be writing to a file, modifying 
-some global variable, or accidentally wiring all your money to a stranger.
+Функция может привносить побочные эффекты, если она не только получает значение и возвращает другое значение/значения, но и делает что-то ещё. Побочным эффектом может быть запись в файл, изменение глобальной переменной или случайная отправка всех ваших денег незнакомому человеку.
 
-Now, you do need to have side effects in a program on occasion. Like the previous 
-example, you might need to write to a file. What you want to do is to centralize where 
-you are doing this. Don't have several functions and classes that write to a particular 
-file. Have one service that does it. One and only one.
+Но иногда побочные эффекты бывают нужны. Например, та же запись в файл. Лучше делать это централизованно. Не выбирайте несколько функций и классов, которые пишут в какой-то один файл, используйте для этого единый сервис. Единственный.
 
-The main point is to avoid common pitfalls like sharing state between objects without
-any structure, using mutable data types that can be written to by anything, and not 
-centralizing where your side effects occur. If you can do this, you will be happier 
-than the vast majority of other programmers.
+Главная задача — избежать распространённых ошибок вроде общего состояния для нескольких объектов без какой-либо структуры; использования изменяемых типов данных, которые могут быть чем-то перезаписаны; отсутствия централизованной обработки побочных эффектов. Если вы сможете это сделать, то будете счастливее подавляющего большинства других программистов.
 
-**Bad:**
+**Плохо:**
 
 ```php
 // Global variable referenced by following function.
@@ -722,7 +697,7 @@ splitIntoFirstAndLastName();
 var_dump($name); // ['Ryan', 'McDermott'];
 ```
 
-**Good:**
+**Хорошо:**
 
 ```php
 function splitIntoFirstAndLastName($name)
@@ -737,17 +712,13 @@ var_dump($name); // 'Ryan McDermott';
 var_dump($newName); // ['Ryan', 'McDermott'];
 ```
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ вернуться к началу](#table-of-contents)**
 
-### Don't write to global functions
+### Не пишите в глобальные функции
 
-Polluting globals is a bad practice in many languages because you could clash with another 
-library and the user of your API would be none-the-wiser until they get an exception in 
-production. Let's think about an example: what if you wanted to have configuration array. 
-You could write global function like `config()`, but it could clash with another library 
-that tried to do the same thing.
+Засорение глобалами — дурная привычка в любом языке, потому что вы можете конфликтовать с другой библиотекой, а пользователи вашего API не будут об этом знать, пока не получат исключение в production. Приведу пример: вам нужен конфигурационный массив. Вы пишете глобальную функцию вроде `config()`, но она может конфликтовать с другой библиотекой, пытающейся делать то же самое.
 
-**Bad:**
+**Плохо:**
 
 ```php
 function config()
@@ -758,7 +729,7 @@ function config()
 }
 ```
 
-**Good:**
+**Хорошо:**
 
 ```php
 class Configuration
@@ -777,7 +748,7 @@ class Configuration
 }
 ```
 
-Load configuration and create instance of `Configuration` class 
+Загрузите конфигурацию и создайте экземпляр класса `Configuration`.
 
 ```php
 $configuration = new Configuration([
@@ -785,11 +756,11 @@ $configuration = new Configuration([
 ]);
 ```
 
-And now you must use instance of `Configuration` in your application.
+И теперь вы должны использовать экземпляр класса `Configuration` в своем приложении.
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ вернуться к началу](#table-of-contents)**
 
-### Don't use a Singleton pattern
+### Не используйте шаблон Singleton
 
 Singleton is an [anti-pattern](https://en.wikipedia.org/wiki/Singleton_pattern). Paraphrased from Brian Button:
  1. They are generally used as a **global instance**, why is that so bad? Because **you hide the dependencies** of your application in your code, instead of exposing them through the interfaces. Making something global to avoid passing it around is a [code smell](https://en.wikipedia.org/wiki/Code_smell).
@@ -799,7 +770,7 @@ Singleton is an [anti-pattern](https://en.wikipedia.org/wiki/Singleton_pattern).
 
 There is also very good thoughts by [Misko Hevery](http://misko.hevery.com/about/) about the [root of problem](http://misko.hevery.com/2008/08/25/root-cause-of-singletons/).
 
-**Bad:**
+**Плохо:**
 
 ```php
 class DBConnection
@@ -826,7 +797,7 @@ class DBConnection
 $singleton = DBConnection::getInstance();
 ```
 
-**Good:**
+**Хорошо:**
 
 ```php
 class DBConnection
@@ -840,19 +811,19 @@ class DBConnection
 }
 ```
 
-Create instance of `DBConnection` class and configure it with [DSN](http://php.net/manual/en/pdo.construct.php#refsect1-pdo.construct-parameters).
+Создайте экземпляр класса `DBConnection` и настройте его с помощью [DSN](http://php.net/manual/en/pdo.construct.php#refsect1-pdo.construct-parameters).
 
 ```php
 $connection = new DBConnection($dsn);
 ```
 
-And now you must use instance of `DBConnection` in your application.
+И теперь вы должны использовать экземпляр класса `DBConnection` в своем приложении.
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ вернуться к началу](#table-of-contents)**
 
-### Encapsulate conditionals
+### Инкапсулирование условных выражений
 
-**Bad:**
+**Плохо:**
 
 ```php
 if ($article->state === 'published') {
@@ -860,7 +831,7 @@ if ($article->state === 'published') {
 }
 ```
 
-**Good:**
+**Хорошо:**
 
 ```php
 if ($article->isPublished()) {
@@ -868,11 +839,11 @@ if ($article->isPublished()) {
 }
 ```
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ вернуться к началу](#table-of-contents)**
 
-### Avoid negative conditionals
+### Избегайте негативных условных выражений
 
-**Bad:**
+**Плохо:**
 
 ```php
 function isDOMNodeNotPresent($node)
@@ -886,7 +857,7 @@ if (!isDOMNodeNotPresent($node))
 }
 ```
 
-**Good:**
+**Хорошо:**
 
 ```php
 function isDOMNodePresent($node)
@@ -899,20 +870,13 @@ if (isDOMNodePresent($node)) {
 }
 ```
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ вернуться к началу](#table-of-contents)**
 
-### Avoid conditionals
+### Избегайте условных выражений
 
-This seems like an impossible task. Upon first hearing this, most people say,
-"how am I supposed to do anything without an `if` statement?" The answer is that
-you can use polymorphism to achieve the same task in many cases. The second
-question is usually, "well that's great but why would I want to do that?" The
-answer is a previous clean code concept we learned: a function should only do
-one thing. When you have classes and functions that have `if` statements, you
-are telling your user that your function does more than one thing. Remember,
-just do one thing.
+Наверно, это кажется невозможным. Впервые это услышав, многие говорят: «Как я смогу что-либо сделать без выражения `if`?» Второй распространённый вопрос: «Ну, это прекрасно, но зачем мне это?» Ответ заключается в рассмотренном выше правиле чистого кода: функция должна делать что-то одно. Если у вас есть классы и функции, содержащие выражение `if`, то тем самым вы говорите своим пользователям, что функция делает больше одной вещи. Не забывайте — нужно оставить что-то одно.
 
-**Bad:**
+**Плохо:**
 
 ```php
 class Airplane
@@ -933,7 +897,7 @@ class Airplane
 }
 ```
 
-**Good:**
+**Хорошо:**
 
 ```php
 interface Airplane
@@ -974,16 +938,13 @@ class Cessna implements Airplane
 }
 ```
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ вернуться к началу](#table-of-contents)**
 
-### Avoid type-checking (part 1)
+### Избегайте проверки типов (часть 1)
 
-PHP is untyped, which means your functions can take any type of argument.
-Sometimes you are bitten by this freedom and it becomes tempting to do
-type-checking in your functions. There are many ways to avoid having to do this.
-The first thing to consider is consistent APIs.
+PHP не типизирован, т. е. ваши функции могут принимать аргументы любых типов. Иногда такая свобода даже мешает и возникает соблазн выполнять проверку типов в функциях. Но есть много способов этого избежать. Первое, что нужно учитывать, это согласованные API.
 
-**Bad:**
+**Плохо:**
 
 ```php
 function travelToTexas($vehicle)
@@ -996,7 +957,7 @@ function travelToTexas($vehicle)
 }
 ```
 
-**Good:**
+**Хорошо:**
 
 ```php
 function travelToTexas(Traveler $vehicle)
@@ -1005,21 +966,13 @@ function travelToTexas(Traveler $vehicle)
 }
 ```
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ вернуться к началу](#table-of-contents)**
 
-### Avoid type-checking (part 2)
+### Избегайте проверки типов (часть 2)
 
-If you are working with basic primitive values like strings, integers, and arrays,
-and you use PHP 7+ and you can't use polymorphism but you still feel the need to
-type-check, you should consider
-[type declaration](http://php.net/manual/en/functions.arguments.php#functions.arguments.type-declaration)
-or strict mode. It provides you with static typing on top of standard PHP syntax.
-The problem with manually type-checking is that doing it will require so much
-extra verbiage that the faux "type-safety" you get doesn't make up for the lost
-readability. Keep your PHP clean, write good tests, and have good code reviews.
-Otherwise, do all of that but with PHP strict type declaration or strict mode.
+Если вы работаете с базовыми примитивами (вроде строковых, целочисленных) и массивами, то не можете использовать полиморфизм. Но если кажется, что вам всё ещё нужна проверка типов и вы используете PHP 7+, то примените [объявление типов](http://php.net/manual/en/functions.arguments.php#functions.arguments.type-declaration) или строгий режим (strict mode). Это даст вам статичную типизацию поверх стандартного PHP-синтаксиса. Проблема ручной проверки типов в том, что её качественное выполнение подразумевает такое многословие, что полученная искусственная «типобезопасность» не компенсирует потери читабельности кода. Сохраняйте чистоту своего PHP, пишите хорошие тесты и проводите качественные ревизии кода. Или делайте всё это, но со строгим объявлением PHP-типов или в строгом режиме.
 
-**Bad:**
+**Плохо:**
 
 ```php
 function combine($val1, $val2)
@@ -1032,7 +985,7 @@ function combine($val1, $val2)
 }
 ```
 
-**Good:**
+**Хорошо:**
 
 ```php
 function combine(int $val1, int $val2)
@@ -1041,15 +994,13 @@ function combine(int $val1, int $val2)
 }
 ```
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ вернуться к началу](#table-of-contents)**
 
-### Remove dead code
+### Убирайте мёртвый код
 
-Dead code is just as bad as duplicate code. There's no reason to keep it in
-your codebase. If it's not being called, get rid of it! It will still be safe
-in your version history if you still need it.
+Он плох так же, как и дублирующий код. Не нужно держать его в кодовой базе. Если что-то не вызывается, избавьтесь от этого! Если что, мёртвый код можно будет достать из истории версий.
 
-**Bad:**
+**Плохо:**
 
 ```php
 function oldRequestModule($url)
@@ -1066,7 +1017,7 @@ $request = newRequestModule($requestUrl);
 inventoryTracker('apples', $request, 'www.inventory-awesome.io');
 ```
 
-**Good:**
+**Хорошо:**
 
 ```php
 function requestModule($url)
@@ -1078,12 +1029,12 @@ $request = requestModule($requestUrl);
 inventoryTracker('apples', $request, 'www.inventory-awesome.io');
 ```
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ вернуться к началу](#table-of-contents)**
 
 
-## Objects and Data Structures
+## Объекты и структуры данных
 
-### Use object encapsulation
+### Используйте инкапсуляцию объектов
 
 In PHP you can set `public`, `protected` and `private` keywords for methods. 
 Using it, you can control properties modification on an object. 
@@ -1099,7 +1050,7 @@ server.
 
 Additionally, this is part of [Open/Closed](#openclosed-principle-ocp) principle.
 
-**Bad:**
+**Плохо:**
 
 ```php
 class BankAccount
@@ -1113,7 +1064,7 @@ $bankAccount = new BankAccount();
 $bankAccount->balance -= 100;
 ```
 
-**Good:**
+**Хорошо:**
 
 ```php
 class BankAccount
@@ -1154,11 +1105,11 @@ $bankAccount->withdrawBalance($shoesPrice);
 $balance = $bankAccount->getBalance();
 ```
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ вернуться к началу](#table-of-contents)**
 
-### Make objects have private/protected members
+### У объектов должны быть private/protected компоненты
 
-**Bad:**
+**Плохо:**
 
 ```php
 class Employee
@@ -1175,7 +1126,7 @@ $employee = new Employee('John Doe');
 echo 'Employee name: '.$employee->name; // Employee name: John Doe
 ```
 
-**Good:**
+**Хорошо:**
 
 ```php
 class Employee
@@ -1197,30 +1148,21 @@ $employee = new Employee('John Doe');
 echo 'Employee name: '.$employee->getName(); // Employee name: John Doe
 ```
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ вернуться к началу](#table-of-contents)**
 
-## Classes
+## Классы
 
-### Prefer composition over inheritance
+### Композиция лучше наследования
 
-As stated famously in [*Design Patterns*](https://en.wikipedia.org/wiki/Design_Patterns) by the Gang of Four,
-you should prefer composition over inheritance where you can. There are lots of
-good reasons to use inheritance and lots of good reasons to use composition.
-The main point for this maxim is that if your mind instinctively goes for
-inheritance, try to think if composition could model your problem better. In some
-cases it can.
+Как говорится в известной книге «[*Шаблоны проектирования*](https://en.wikipedia.org/wiki/Design_Patterns)» Банды четырёх, по мере возможности нужно выбирать композицию, а не наследование. Есть много хороших причин использовать как наследование, так и композицию. Главная цель этой максимы заключается в том, если вы инстинктивно склоняетесь к наследованию, то постарайтесь представить, может ли композиция лучше решить вашу задачу. В каких-то случаях это действительно более подходящий вариант.
 
-You might be wondering then, "when should I use inheritance?" It
-depends on your problem at hand, but this is a decent list of when inheritance
-makes more sense than composition:
+Вы спросите: «А когда лучше выбирать наследование?» Всё зависит от конкретной задачи, но можно ориентироваться на этот список ситуаций, когда наследование предпочтительнее композиции:
 
-1. Your inheritance represents an "is-a" relationship and not a "has-a"
-relationship (Human->Animal vs. User->UserDetails).
-2. You can reuse code from the base classes (Humans can move like all animals).
-3. You want to make global changes to derived classes by changing a base class.
-(Change the caloric expenditure of all animals when they move).
+1. Ваше наследование — это взаимосвязь is-a, а не has-a. Пример: Человек → Животное vs. Пользователь → Детали пользователя (UserDetails).
+2. Вы можете повторно использовать код из базовых классов. (Люди могут двигаться, как животные.)
+3. Вы хотите внести глобальные изменения в производные классы, изменив базовый класс. (Изменение расхода калорий у животных во время движения.)
 
-**Bad:**
+**Плохо:**
 
 ```php
 class Employee 
@@ -1257,7 +1199,7 @@ class EmployeeTaxData extends Employee
 }
 ```
 
-**Good:**
+**Хорошо:**
 
 ```php
 class EmployeeTaxData 
@@ -1295,7 +1237,7 @@ class Employee
 }
 ```
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ вернуться к началу](#table-of-contents)**
 
 ### Avoid fluent interfaces
 A [Fluent interface](https://en.wikipedia.org/wiki/Fluent_interface) is an object
@@ -1315,7 +1257,7 @@ more often it comes at some costs:
 For more informations you can read the full [blog post](https://ocramius.github.io/blog/fluent-interfaces-are-evil/)
 on this topic written by [Marco Pivetta](https://github.com/Ocramius).
 
-**Bad:**
+**Плохо:**
 ```php
 class Car
 {
@@ -1360,7 +1302,7 @@ $car = (new Car())
   ->dump();
 ```
 
-**Good:**
+**Хорошо:**
 ```php
 class Car
 {
@@ -1396,7 +1338,7 @@ $car->setModel('F-150');
 $car->dump();
 ```
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ вернуться к началу](#table-of-contents)**
 
 ## SOLID
 
@@ -1419,7 +1361,7 @@ It's important because if too much functionality is in one class and you modify 
 it can be difficult to understand how that will affect other dependent modules in
 your codebase.
 
-**Bad:**
+**Плохо:**
 
 ```php
 class UserSettings
@@ -1445,7 +1387,7 @@ class UserSettings
 }
 ```
 
-**Good:**
+**Хорошо:**
 
 ```php
 class UserAuth 
@@ -1483,7 +1425,7 @@ class UserSettings
 }
 ```
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ вернуться к началу](#table-of-contents)**
 
 ### Open/Closed Principle (OCP)
 
@@ -1492,7 +1434,7 @@ etc.) should be open for extension, but closed for modification." What does that
 mean though? This principle basically states that you should allow users to
 add new functionalities without changing existing code.
 
-**Bad:**
+**Плохо:**
 
 ```php
 abstract class Adapter
@@ -1557,7 +1499,7 @@ class HttpRequester
 }
 ```
 
-**Good:**
+**Хорошо:**
 
 ```php
 interface Adapter
@@ -1597,7 +1539,7 @@ class HttpRequester
 }
 ```
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ вернуться к началу](#table-of-contents)**
 
 ### Liskov Substitution Principle (LSP)
 
@@ -1614,7 +1556,7 @@ classic Square-Rectangle example. Mathematically, a square is a rectangle, but
 if you model it using the "is-a" relationship via inheritance, you quickly
 get into trouble.
 
-**Bad:**
+**Плохо:**
 
 ```php
 class Rectangle
@@ -1661,7 +1603,7 @@ function renderLargeRectangles($rectangles)
     foreach ($rectangles as $rectangle) {
         $rectangle->setWidth(4);
         $rectangle->setHeight(5);
-        $area = $rectangle->getArea(); // BAD: Will return 25 for Square. Should be 20.
+        $area = $rectangle->getArea(); // Плохо: Will return 25 for Square. Should be 20.
         $rectangle->render($area);
     }
 }
@@ -1670,7 +1612,7 @@ $rectangles = [new Rectangle(), new Rectangle(), new Square()];
 renderLargeRectangles($rectangles);
 ```
 
-**Good:**
+**Хорошо:**
 
 ```php
 abstract class Shape
@@ -1738,7 +1680,7 @@ $shapes = [new Rectangle(), new Rectangle(), new Square()];
 renderLargeRectangles($shapes);
 ```
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ вернуться к началу](#table-of-contents)**
 
 ### Interface Segregation Principle (ISP)
 
@@ -1750,7 +1692,7 @@ classes that require large settings objects. Not requiring clients to setup
 huge amounts of options is beneficial, because most of the time they won't need
 all of the settings. Making them optional helps prevent having a "fat interface".
 
-**Bad:**
+**Плохо:**
 
 ```php
 interface Employee
@@ -1787,7 +1729,7 @@ class Robot implements Employee
 }
 ```
 
-**Good:**
+**Хорошо:**
 
 Not every worker is an employee, but every employee is an worker.
 
@@ -1829,7 +1771,7 @@ class Robot implements Workable
 }
 ```
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ вернуться к началу](#table-of-contents)**
 
 ### Dependency Inversion Principle (DIP)
 
@@ -1846,7 +1788,7 @@ It can accomplish this through DI. A huge benefit of this is that it reduces
 the coupling between modules. Coupling is a very bad development pattern because
 it makes your code hard to refactor.
 
-**Bad:**
+**Плохо:**
 
 ```php
 class Employee
@@ -1881,7 +1823,7 @@ class Manager
 }
 ```
 
-**Good:**
+**Хорошо:**
 
 ```php
 interface Employee
@@ -1921,34 +1863,21 @@ class Manager
 }
 ```
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ вернуться к началу](#table-of-contents)**
 
 ## Don’t repeat yourself (DRY)
 
-Try to observe the [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself) principle.
+Постарайтесь соблюдать принцип [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself).
 
-Do your absolute best to avoid duplicate code. Duplicate code is bad because 
-it means that there's more than one place to alter something if you need to 
-change some logic.
+Старайтесь полностью избавиться от дублирующего кода. Он плох тем, что если вам нужно менять логику, то это придётся делать в нескольких местах.
 
-Imagine if you run a restaurant and you keep track of your inventory: all your 
-tomatoes, onions, garlic, spices, etc. If you have multiple lists that
-you keep this on, then all have to be updated when you serve a dish with
-tomatoes in them. If you only have one list, there's only one place to update!
+Представьте, что вы владеете ресторанчиком и отслеживаете, есть ли продукты: помидоры, лук, чеснок, специи и т. д. Если у вас несколько списков с содержимым холодильников, то вам придётся обновлять их все, когда вы готовите какое-то блюдо. А если список один, то и вносить изменения придётся только в него.
 
-Oftentimes you have duplicate code because you have two or more slightly
-different things, that share a lot in common, but their differences force you
-to have two or more separate functions that do much of the same things. Removing 
-duplicate code means creating an abstraction that can handle this set of different 
-things with just one function/module/class.
+Зачастую дублирующий код возникает потому, что вы делаете две и более вещи, у которых много общего. Но небольшая разница между ними заставляет вас писать несколько функций, и те по большей части делают одно и то же. Удаление дублирующего кода означает, что вы создаёте абстракцию, которая может обрабатывать все различия с помощью единственной функции/модуля/класса.
 
-Getting the abstraction right is critical, that's why you should follow the
-SOLID principles laid out in the [Classes](#classes) section. Bad abstractions can be
-worse than duplicate code, so be careful! Having said this, if you can make
-a good abstraction, do it! Don't repeat yourself, otherwise you'll find yourself 
-updating multiple places anytime you want to change one thing.
+Правильный выбор абстракции критически важен, поэтому нужно следовать принципам SOLID, описанным в разделе «[Классы](#classes)». Плохие абстракции могут оказаться хуже дублирующего кода, так что будьте осторожны! Но если можете написать хорошие, то делайте это! Не повторяйтесь, иначе окажется, что при каждом изменении вам нужно обновлять код в нескольких местах.
 
-**Bad:**
+**Плохо:**
 
 ```php
 function showDeveloperList($developers)
@@ -1984,7 +1913,7 @@ function showManagerList($managers)
 }
 ```
 
-**Good:**
+**Хорошо:**
 
 ```php
 function showList($employees)
@@ -2004,9 +1933,9 @@ function showList($employees)
 }
 ```
 
-**Very good:**
+**Очень хорошо:**
 
-It is better to use a compact version of the code.
+Лучше использовать компактную версию кода.
 
 ```php
 function showList($employees)
@@ -2021,14 +1950,14 @@ function showList($employees)
 }
 ```
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ вернуться к началу](#table-of-contents)**
 
-## Translations
+## Переводы
 
-This is also available in other languages:
+На других языках:
 
- * ![cn](https://raw.githubusercontent.com/gosquared/flags/master/flags/flags/shiny/24/China.png) **Chinese:**
+ * ![cn](https://raw.githubusercontent.com/gosquared/flags/master/flags/flags/shiny/24/China.png) **Китайский:**
    * [yangweijie/clean-code-php](https://github.com/yangweijie/clean-code-php)
    * [php-cpm/clean-code-php](https://github.com/php-cpm/clean-code-php)
 
-**[⬆ back to top](#table-of-contents)**
+**[⬆ вернуться к началу](#table-of-contents)**
