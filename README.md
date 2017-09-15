@@ -762,13 +762,14 @@ $configuration = new Configuration([
 
 ### Не используйте шаблон Singleton
 
-Singleton is an [anti-pattern](https://en.wikipedia.org/wiki/Singleton_pattern). Paraphrased from Brian Button:
- 1. They are generally used as a **global instance**, why is that so bad? Because **you hide the dependencies** of your application in your code, instead of exposing them through the interfaces. Making something global to avoid passing it around is a [code smell](https://en.wikipedia.org/wiki/Code_smell).
- 2. They violate the [single responsibility principle](#single-responsibility-principle-srp): by virtue of the fact that **they control their own creation and lifecycle**.
- 3. They inherently cause code to be tightly [coupled](https://en.wikipedia.org/wiki/Coupling_%28computer_programming%29). This makes faking them out under **test rather difficult** in many cases.
- 4. They carry state around for the lifetime of the application. Another hit to testing since **you can end up with a situation where tests need to be ordered** which is a big no for unit tests. Why? Because each unit test should be independent from the other.
+Шаблон проектирования Одиночка (Singleton) является [антипаттерном](https://ru.wikipedia.org/wiki/Одиночка_(шаблон_проектирования)). Перефразируем Brian Button:
 
-There is also very good thoughts by [Misko Hevery](http://misko.hevery.com/about/) about the [root of problem](http://misko.hevery.com/2008/08/25/root-cause-of-singletons/).
+1. Как правило, одиночки используются в качестве **глобального экземпляра**, почему это так плохо? Потому, что вы **скрываете зависимости вашего приложения** в своем коде, вместо того, чтобы сделать их явными через интерфейсы. Сделать что-то глобальным, чтобы избежать его распространения - это [чем-то попахивает](https://ru.wikipedia.org/wiki/Код_с_запашком).
+2. Одиночки нарушают принцип [единой ответственности](#single-responsibility-principle-srp): в силу того, что **они контролируют собственное создание и жизненный цикл**.
+3. Одиночки по своей сути приводят к тому, что код получается тесно [связанным](https://ru.wikipedia.org/wiki/Зацепление (программирование)). Это во многих случаях **затрудняет его тестирование**.
+4. Одиночки несут состояние на протяжении всей жизни приложения. Еще один удар по тестированию, **так как вы можете столкнуться с ситуацией, когда необходимо закончить тесты**, что является большим нет для модульных тестов. Зачем? Потому что каждый модульный тест должен быть независимым от другого.
+
+[Misko Hevery](http://misko.hevery.com/about/) также очень хорошо разбирается в [корне проблемы](http://misko.hevery.com/2008/08/25/root-cause-of-singletons/).
 
 **Плохо:**
 
@@ -1036,19 +1037,16 @@ inventoryTracker('apples', $request, 'www.inventory-awesome.io');
 
 ### Используйте инкапсуляцию объектов
 
-In PHP you can set `public`, `protected` and `private` keywords for methods. 
-Using it, you can control properties modification on an object. 
+В PHP можно задать для методов ключевые слова `public`, `protected` и `private`. С их помощью вы будете управлять изменением свойств объекта.
 
-* When you want to do more beyond getting an object property, you don't have
-to look up and change every accessor in your codebase.
-* Makes adding validation simple when doing a `set`.
-* Encapsulates the internal representation.
-* Easy to add logging and error handling when getting and setting.
-* Inheriting this class, you can override default functionality.
-* You can lazy load your object's properties, let's say getting it from a
-server.
+* Если вам нужно не только получать свойство объекта, то необязательно находить и менять каждый метод чтения (accessor) в кодовой базе.
+* Благодаря `set` проще добавить валидацию.
+* Можно инкапсулировать внутреннее представление.
+* С помощью геттеров и сеттеров легко добавлять журналирование и обработку ошибок.
+* При наследовании такого класса вы можете переопределить функциональность по умолчанию.
+* Вы можете лениво загружать свойства объекта, например получая их с сервера.
 
-Additionally, this is part of [Open/Closed](#openclosed-principle-ocp) principle.
+Также это часть принципа [Открытости/Закрытости](#openclosed-principle-ocp), входящего в набор объектно ориентированных принципов проектирования.
 
 **Плохо:**
 
