@@ -156,7 +156,7 @@ $address = 'One Infinite Loop, Cupertino 95014';
 $cityZipCodeRegex = '/^[^,\\]+[,\\\s]+(.+?)\s*(\d{5})?$/';
 preg_match($cityZipCodeRegex, $address, $matches);
 
-list(, $city, $zipCode) = $matches;
+[, $city, $zipCode] = $matches;
 saveCityZipCode($city, $zipCode);
 ```
 
@@ -181,7 +181,7 @@ saveCityZipCode($matches['city'], $matches['zipCode']);
 **Плохо:**
 
 ```php
-function isShopOpen($day)
+function isShopOpen($day): bool
 {
     if ($day) {
         if (is_string($day)) {
@@ -207,9 +207,9 @@ function isShopOpen($day)
 **Хорошо:**
 
 ```php
-function isShopOpen($day)
+function isShopOpen(string $day): bool
 {
-    if (empty($day) && ! is_string($day)) {
+    if (empty($day)) {
         return false;
     }
 
@@ -228,7 +228,7 @@ function isShopOpen($day)
 **Плохо:**
 
 ```php
-function fibonacci($n)
+function fibonacci(int $n)
 {
     if ($n < 50) {
         if ($n !== 0) {
@@ -249,7 +249,7 @@ function fibonacci($n)
 **Хорошо:**
 
 ```php
-function fibonacci($n)
+function fibonacci(int $n): int
 {
     if ($n === 0) {
         return 0;
@@ -260,7 +260,7 @@ function fibonacci($n)
     }
 
     if ($n > 50) {
-        return 'Not supported';
+        throw new \Exception('Not supported');
     }
 
     return fibonacci($n - 1) + fibonacci($n - 2);
@@ -346,7 +346,7 @@ class Car
 Это не хорошо потому, что переменная `$breweryName` может быть `NULL`.
 
 ```php
-function createMicrobrewery($breweryName = 'Hipster Brew Co.')
+function createMicrobrewery($breweryName = 'Hipster Brew Co.'): void
 {
     // ...
 }
@@ -357,7 +357,7 @@ function createMicrobrewery($breweryName = 'Hipster Brew Co.')
 Это решение мение понятно, чем предыдущая версия, но лучше контролирует значение переменной.
 
 ```php
-function createMicrobrewery($name = null)
+function createMicrobrewery($name = null): void
 {
     $breweryName = $name ?: 'Hipster Brew Co.';
     // ...
@@ -369,7 +369,7 @@ function createMicrobrewery($name = null)
 Если вы используете только PHP 7+, то вы можете использовать [контроль типов](http://php.net/manual/en/functions.arguments.php#functions.arguments.type-declaration) и быть увереным, что переменная `$breweryName` никогда не будет `NULL`.
 
 ```php
-function createMicrobrewery(string $breweryName = 'Hipster Brew Co.')
+function createMicrobrewery(string $breweryName = 'Hipster Brew Co.'): void
 {
     // ...
 }
@@ -388,7 +388,7 @@ function createMicrobrewery(string $breweryName = 'Hipster Brew Co.')
 **Плохо:**
 
 ```php
-function createMenu($title, $body, $buttonText, $cancellable)
+function createMenu(string $title, string $body, string $buttonText, bool $cancellable): void
 {
     // ...
 }
@@ -411,7 +411,7 @@ $config->body = 'Bar';
 $config->buttonText = 'Baz';
 $config->cancellable = true;
 
-function createMenu(MenuConfig $config)
+function createMenu(MenuConfig $config): void
 {
     // ...
 }
@@ -426,7 +426,7 @@ function createMenu(MenuConfig $config)
 **Плохо:**
 
 ```php
-function emailClients($clients)
+function emailClients(array $clients): void
 {
     foreach ($clients as $client) {
         $clientRecord = $db->find($client);
@@ -440,18 +440,18 @@ function emailClients($clients)
 **Хорошо:**
 
 ```php
-function emailClients($clients)
+function emailClients(array $clients): void
 {
     $activeClients = activeClients($clients);
     array_walk($activeClients, 'email');
 }
 
-function activeClients($clients)
+function activeClients(array $clients): array
 {
     return array_filter($clients, 'isClientActive');
 }
 
-function isClientActive($client)
+function isClientActive(int $client): bool
 {
     $clientRecord = $db->find($client);
 
@@ -470,7 +470,7 @@ class Email
 {
     //...
 
-    public function handle()
+    public function handle(): void
     {
         mail($this->to, $this->subject, $this->body);
     }
@@ -488,7 +488,7 @@ class Email
 {
     //...
 
-    public function send()
+    public function send(): void
     {
         mail($this->to, $this->subject, $this->body);
     }
@@ -508,7 +508,7 @@ $message->send();
 **Плохо:**
 
 ```php
-function parseBetterJSAlternative($code)
+function parseBetterJSAlternative(string $code): void
 {
     $regexes = [
         // ...
@@ -538,7 +538,7 @@ function parseBetterJSAlternative($code)
 Мы выполнили некоторые функции, но функция `parseBetterJSAlternative()` все еще очень сложна и не тестируема.
 
 ```php
-function tokenize($code)
+function tokenize(string $code): array
 {
     $regexes = [
         // ...
@@ -555,7 +555,7 @@ function tokenize($code)
     return $tokens;
 }
 
-function lexer($tokens)
+function lexer(array $tokens): array
 {
     $ast = [];
     foreach ($tokens as $token) {
@@ -565,7 +565,7 @@ function lexer($tokens)
     return $ast;
 }
 
-function parseBetterJSAlternative($code)
+function parseBetterJSAlternative(string $code): void
 {
     $tokens = tokenize($code);
     $ast = lexer($tokens);
@@ -582,7 +582,7 @@ function parseBetterJSAlternative($code)
 ```php
 class Tokenizer
 {
-    public function tokenize($code)
+    public function tokenize(string $code): array
     {
         $regexes = [
             // ...
@@ -602,7 +602,7 @@ class Tokenizer
 
 class Lexer
 {
-    public function lexify($tokens)
+    public function lexify(array $tokens): array
     {
         $ast = [];
         foreach ($tokens as $token) {
@@ -624,7 +624,7 @@ class BetterJSAlternative
         $this->lexer = $lexer;
     }
 
-    public function parse($code)
+    public function parse(string $code): void
     {
         $tokens = $this->tokenizer->tokenize($code);
         $ast = $this->lexer->lexify($tokens);
@@ -644,7 +644,7 @@ class BetterJSAlternative
 **Плохо:**
 
 ```php
-function createFile($name, $temp = false)
+function createFile(string $name, bool $temp = false): void
 {
     if ($temp) {
         touch('./temp/'.$name);
@@ -657,12 +657,12 @@ function createFile($name, $temp = false)
 **Хорошо:**
 
 ```php
-function createFile($name)
+function createFile(string $name): void
 {
     touch($name);
 }
 
-function createTempFile($name)
+function createTempFile(string $name): void
 {
     touch('./temp/'.$name);
 }
@@ -685,7 +685,7 @@ function createTempFile($name)
 // If we had another function that used this name, now it'd be an array and it could break it.
 $name = 'Ryan McDermott';
 
-function splitIntoFirstAndLastName()
+function splitIntoFirstAndLastName(): void
 {
     global $name;
 
@@ -700,7 +700,7 @@ var_dump($name); // ['Ryan', 'McDermott'];
 **Хорошо:**
 
 ```php
-function splitIntoFirstAndLastName($name)
+function splitIntoFirstAndLastName(string $name): array
 {
     return explode(' ', $name);
 }
@@ -721,7 +721,7 @@ var_dump($newName); // ['Ryan', 'McDermott'];
 **Плохо:**
 
 ```php
-function config()
+function config(): array
 {
     return  [
         'foo' => 'bar',
@@ -741,7 +741,7 @@ class Configuration
         $this->configuration = $configuration;
     }
 
-    public function get($key)
+    public function get(string $key): ?string
     {
         return isset($this->configuration[$key]) ? $this->configuration[$key] : null;
     }
@@ -778,12 +778,12 @@ class DBConnection
 {
     private static $instance;
 
-    private function __construct($dsn)
+    private function __construct(string $dsn)
     {
         // ...
     }
 
-    public static function getInstance()
+    public static function getInstance(): DBConnection
     {
         if (self::$instance === null) {
             self::$instance = new self();
@@ -803,7 +803,7 @@ $singleton = DBConnection::getInstance();
 ```php
 class DBConnection
 {
-    public function __construct(array $dsn)
+    public function __construct(string $dsn)
     {
         // ...
     }
@@ -847,7 +847,7 @@ if ($article->isPublished()) {
 **Плохо:**
 
 ```php
-function isDOMNodeNotPresent($node)
+function isDOMNodeNotPresent(\DOMNode $node): bool
 {
     // ...
 }
@@ -861,7 +861,7 @@ if (!isDOMNodeNotPresent($node))
 **Хорошо:**
 
 ```php
-function isDOMNodePresent($node)
+function isDOMNodePresent(\DOMNode $node): bool
 {
     // ...
 }
@@ -884,7 +884,7 @@ class Airplane
 {
     // ...
 
-    public function getCruisingAltitude()
+    public function getCruisingAltitude(): int
     {
         switch ($this->type) {
             case '777':
@@ -905,14 +905,14 @@ interface Airplane
 {
     // ...
 
-    public function getCruisingAltitude();
+    public function getCruisingAltitude(): int;
 }
 
 class Boeing777 implements Airplane
 {
     // ...
 
-    public function getCruisingAltitude()
+    public function getCruisingAltitude(): int
     {
         return $this->getMaxAltitude() - $this->getPassengerCount();
     }
@@ -922,7 +922,7 @@ class AirForceOne implements Airplane
 {
     // ...
 
-    public function getCruisingAltitude()
+    public function getCruisingAltitude(): int
     {
         return $this->getMaxAltitude();
     }
@@ -932,7 +932,7 @@ class Cessna implements Airplane
 {
     // ...
 
-    public function getCruisingAltitude()
+    public function getCruisingAltitude(): int
     {
         return $this->getMaxAltitude() - $this->getFuelExpenditure();
     }
@@ -948,7 +948,7 @@ PHP не типизирован, т. е. ваши функции могут пр
 **Плохо:**
 
 ```php
-function travelToTexas($vehicle)
+function travelToTexas($vehicle): void
 {
     if ($vehicle instanceof Bicycle) {
         $vehicle->peddleTo(new Location('texas'));
@@ -961,7 +961,7 @@ function travelToTexas($vehicle)
 **Хорошо:**
 
 ```php
-function travelToTexas(Traveler $vehicle)
+function travelToTexas(Traveler $vehicle): void
 {
     $vehicle->travelTo(new Location('texas'));
 }
@@ -976,7 +976,7 @@ function travelToTexas(Traveler $vehicle)
 **Плохо:**
 
 ```php
-function combine($val1, $val2)
+function combine($val1, $val2): int
 {
     if (!is_numeric($val1) || !is_numeric($val2)) {
         throw new \Exception('Must be of type Number');
@@ -989,7 +989,7 @@ function combine($val1, $val2)
 **Хорошо:**
 
 ```php
-function combine(int $val1, int $val2)
+function combine(int $val1, int $val2): int
 {
     return $val1 + $val2;
 }
@@ -1004,12 +1004,12 @@ function combine(int $val1, int $val2)
 **Плохо:**
 
 ```php
-function oldRequestModule($url)
+function oldRequestModule(string $url): void
 {
     // ...
 }
 
-function newRequestModule($url)
+function newRequestModule(string $url): void
 {
     // ...
 }
@@ -1021,7 +1021,7 @@ inventoryTracker('apples', $request, 'www.inventory-awesome.io');
 **Хорошо:**
 
 ```php
-function requestModule($url)
+function requestModule(string $url): void
 {
     // ...
 }
@@ -1069,12 +1069,12 @@ class BankAccount
 {
     private $balance;
 
-    public function __construct($balance = 1000)
+    public function __construct(int $balance = 1000)
     {
       $this->balance = $balance;
     }
 
-    public function withdrawBalance($amount)
+    public function withdrawBalance(int $amount): void
     {
         if ($amount > $this->balance) {
             throw new \Exception('Amount greater than available balance.');
@@ -1083,12 +1083,12 @@ class BankAccount
         $this->balance -= $amount;
     }
 
-    public function depositBalance($amount)
+    public function depositBalance(int $amount): void
     {
         $this->balance += $amount;
     }
 
-    public function getBalance()
+    public function getBalance(): int
     {
         return $this->balance;
     }
@@ -1114,7 +1114,7 @@ class Employee
 {
     public $name;
 
-    public function __construct($name)
+    public function __construct(string $name)
     {
         $this->name = $name;
     }
@@ -1131,12 +1131,12 @@ class Employee
 {
     private $name;
 
-    public function __construct($name)
+    public function __construct(string $name)
     {
         $this->name = $name;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -1168,7 +1168,7 @@ class Employee
     private $name;
     private $email;
 
-    public function __construct($name, $email)
+    public function __construct(string $name, string $email)
     {
         $this->name = $name;
         $this->email = $email;
@@ -1185,7 +1185,7 @@ class EmployeeTaxData extends Employee
     private $ssn;
     private $salary;
     
-    public function __construct($name, $email, $ssn, $salary)
+    public function __construct(string $name, string $email, string $ssn, string $salary)
     {
         parent::__construct($name, $email);
 
@@ -1205,7 +1205,7 @@ class EmployeeTaxData
     private $ssn;
     private $salary;
 
-    public function __construct($ssn, $salary)
+    public function __construct(string $ssn, string $salary)
     {
         $this->ssn = $ssn;
         $this->salary = $salary;
@@ -1220,13 +1220,13 @@ class Employee
     private $email;
     private $taxData;
 
-    public function __construct($name, $email)
+    public function __construct(string $name, string $email)
     {
         $this->name = $name;
         $this->email = $email;
     }
 
-    public function setTaxData($ssn, $salary)
+    public function setTaxData(string $ssn, string $salary)
     {
         $this->taxData = new EmployeeTaxData($ssn, $salary);
     }
@@ -1259,7 +1259,7 @@ class Car
     private $model = 'Accord';
     private $color = 'white';
 
-    public function setMake($make)
+    public function setMake(string $make): self
     {
         $this->make = $make;
 
@@ -1267,7 +1267,7 @@ class Car
         return $this;
     }
 
-    public function setModel($model)
+    public function setModel(string $model): self
     {
         $this->model = $model;
 
@@ -1275,7 +1275,7 @@ class Car
         return $this;
     }
 
-    public function setColor($color)
+    public function setColor(string $color): self
     {
         $this->color = $color;
 
@@ -1283,7 +1283,7 @@ class Car
         return $this;
     }
 
-    public function dump()
+    public function dump(): void
     {
         var_dump($this->make, $this->model, $this->color);
     }
@@ -1305,22 +1305,22 @@ class Car
     private $model = 'Accord';
     private $color = 'white';
 
-    public function setMake($make)
+    public function setMake(string $make): void
     {
         $this->make = $make;
     }
 
-    public function setModel($model)
+    public function setModel(string $model): void
     {
         $this->model = $model;
     }
 
-    public function setColor($color)
+    public function setColor(string $color): void
     {
         $this->color = $color;
     }
 
-    public function dump()
+    public function dump(): void
     {
         var_dump($this->make, $this->model, $this->color);
     }
@@ -1363,19 +1363,19 @@ class UserSettings
 {
     private $user;
 
-    public function __construct($user)
+    public function __construct(User $user)
     {
         $this->user = $user;
     }
 
-    public function changeSettings($settings)
+    public function changeSettings(array $settings): void
     {
         if ($this->verifyCredentials()) {
             // ...
         }
     }
 
-    private function verifyCredentials()
+    private function verifyCredentials(): bool
     {
         // ...
     }
@@ -1389,12 +1389,12 @@ class UserAuth
 {
     private $user;
 
-    public function __construct($user)
+    public function __construct(User $user)
     {
         $this->user = $user;
     }
     
-    public function verifyCredentials()
+    public function verifyCredentials(): bool
     {
         // ...
     }
@@ -1405,13 +1405,13 @@ class UserSettings
     private $user;
     private $auth;
 
-    public function __construct($user) 
+    public function __construct(User $user) 
     {
         $this->user = $user;
         $this->auth = new UserAuth($user);
     }
 
-    public function changeSettings($settings)
+    public function changeSettings(array $settings): void
     {
         if ($this->auth->verifyCredentials()) {
             // ...
@@ -1436,7 +1436,7 @@ abstract class Adapter
 {
     protected $name;
 
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -1466,12 +1466,12 @@ class HttpRequester
 {
     private $adapter;
 
-    public function __construct($adapter)
+    public function __construct(Adapter $adapter)
     {
         $this->adapter = $adapter;
     }
 
-    public function fetch($url)
+    public function fetch(string $url): Promise
     {
         $adapterName = $this->adapter->getName();
 
@@ -1482,12 +1482,12 @@ class HttpRequester
         }
     }
 
-    private function makeAjaxCall($url)
+    private function makeAjaxCall(string $url): Promise
     {
         // request and return promise
     }
 
-    private function makeHttpCall($url)
+    private function makeHttpCall(string $url): Promise
     {
         // request and return promise
     }
@@ -1499,12 +1499,12 @@ class HttpRequester
 ```php
 interface Adapter
 {
-    public function request($url);
+    public function request(string $url): Promise;
 }
 
 class AjaxAdapter implements Adapter
 {
-    public function request($url)
+    public function request(string $url): Promise
     {
         // request and return promise
     }
@@ -1512,7 +1512,7 @@ class AjaxAdapter implements Adapter
 
 class NodeAdapter implements Adapter
 {
-    public function request($url)
+    public function request(string $url): Promise
     {
         // request and return promise
     }
@@ -1527,7 +1527,7 @@ class HttpRequester
         $this->adapter = $adapter;
     }
 
-    public function fetch($url)
+    public function fetch(string $url): Promise
     {
         return $this->adapter->request($url);
     }
@@ -1559,22 +1559,22 @@ class Rectangle
     protected $width = 0;
     protected $height = 0;
 
-    public function render($area)
+    public function render(int $area): void
     {
         // ...
     }
 
-    public function setWidth($width)
+    public function setWidth(int $width): void
     {
         $this->width = $width;
     }
 
-    public function setHeight($height)
+    public function setHeight(int $height): void
     {
         $this->height = $height;
     }
 
-    public function getArea()
+    public function getArea(): int
     {
         return $this->width * $this->height;
     }
@@ -1582,18 +1582,18 @@ class Rectangle
 
 class Square extends Rectangle
 {
-    public function setWidth($width)
+    public function setWidth(int $width): void
     {
         $this->width = $this->height = $width;
     }
 
-    public function setHeight(height)
+    public function setHeight(int $height): void
     {
         $this->width = $this->height = $height;
     }
 }
 
-function renderLargeRectangles($rectangles)
+function renderLargeRectangles(Rectangle $rectangles): void
 {
     foreach ($rectangles as $rectangle) {
         $rectangle->setWidth(4);
@@ -1615,9 +1615,9 @@ abstract class Shape
     protected $width = 0;
     protected $height = 0;
 
-    abstract public function getArea();
+    abstract public function getArea(): int;
 
-    public function render($area)
+    public function render(int $area): void
     {
         // ...
     }
@@ -1625,17 +1625,17 @@ abstract class Shape
 
 class Rectangle extends Shape
 {
-    public function setWidth($width)
+    public function setWidth(int $width): void
     {
         $this->width = $width;
     }
 
-    public function setHeight($height)
+    public function setHeight(int $height): void
     {
         $this->height = $height;
     }
 
-    public function getArea()
+    public function getArea(): int
     {
         return $this->width * $this->height;
     }
@@ -1645,18 +1645,18 @@ class Square extends Shape
 {
     private $length = 0;
 
-    public function setLength($length)
+    public function setLength(int $length): void
     {
         $this->length = $length;
     }
 
-    public function getArea()
+    public function getArea(): int
     {
         return pow($this->length, 2);
     }
 }
 
-function renderLargeRectangles($rectangles)
+function renderLargeRectangles(Shape $rectangles): void
 {
     foreach ($rectangles as $rectangle) {
         if ($rectangle instanceof Square) {
@@ -1692,19 +1692,19 @@ all of the settings. Making them optional helps prevent having a "fat interface"
 ```php
 interface Employee
 {
-    public function work();
+    public function work(): void;
 
-    public function eat();
+    public function eat(): void;
 }
 
 class Human implements Employee
 {
-    public function work()
+    public function work(): void
     {
         // ....working
     }
 
-    public function eat()
+    public function eat(): void
     {
         // ...... eating in lunch break
     }
@@ -1712,12 +1712,12 @@ class Human implements Employee
 
 class Robot implements Employee
 {
-    public function work()
+    public function work(): void
     {
         //.... working much more
     }
 
-    public function eat()
+    public function eat(): void
     {
         //.... robot can't eat, but it must implement this method
     }
@@ -1731,12 +1731,12 @@ Not every worker is an employee, but every employee is an worker.
 ```php
 interface Workable
 {
-    public function work();
+    public function work(): void;
 }
 
 interface Feedable
 {
-    public function eat();
+    public function eat(): void;
 }
 
 interface Employee extends Feedable, Workable
@@ -1745,12 +1745,12 @@ interface Employee extends Feedable, Workable
 
 class Human implements Employee
 {
-    public function work()
+    public function work(): void
     {
         // ....working
     }
 
-    public function eat()
+    public function eat(): void
     {
         //.... eating in lunch break
     }
@@ -1759,7 +1759,7 @@ class Human implements Employee
 // robot can only work
 class Robot implements Workable
 {
-    public function work()
+    public function work(): void
     {
         // ....working
     }
@@ -1788,7 +1788,7 @@ it makes your code hard to refactor.
 ```php
 class Employee
 {
-    public function work()
+    public function work(): void
     {
         // ....working
     }
@@ -1796,7 +1796,7 @@ class Employee
 
 class Robot extends Employee
 {
-    public function work()
+    public function work(): void
     {
         //.... working much more
     }
@@ -1811,7 +1811,7 @@ class Manager
         $this->employee = $employee;
     }
 
-    public function manage()
+    public function manage(): void
     {
         $this->employee->work();
     }
@@ -1823,12 +1823,12 @@ class Manager
 ```php
 interface Employee
 {
-    public function work();
+    public function work(): void;
 }
 
 class Human implements Employee
 {
-    public function work()
+    public function work(): void
     {
         // ....working
     }
@@ -1836,7 +1836,7 @@ class Human implements Employee
 
 class Robot implements Employee
 {
-    public function work()
+    public function work(): void
     {
         //.... working much more
     }
@@ -1851,7 +1851,7 @@ class Manager
         $this->employee = $employee;
     }
 
-    public function manage()
+    public function manage(): void
     {
         $this->employee->work();
     }
@@ -1875,7 +1875,7 @@ class Manager
 **Плохо:**
 
 ```php
-function showDeveloperList($developers)
+function showDeveloperList(array $developers): void
 {
     foreach ($developers as $developer) {
         $expectedSalary = $developer->calculateExpectedSalary();
@@ -1891,7 +1891,7 @@ function showDeveloperList($developers)
     }
 }
 
-function showManagerList($managers)
+function showManagerList(array $managers): void
 {
     foreach ($managers as $manager) {
         $expectedSalary = $manager->calculateExpectedSalary();
@@ -1911,7 +1911,7 @@ function showManagerList($managers)
 **Хорошо:**
 
 ```php
-function showList($employees)
+function showList(array $employees): void
 {
     foreach ($employees as $employee) {
         $expectedSalary = $employee->calculateExpectedSalary();
@@ -1933,7 +1933,7 @@ function showList($employees)
 Лучше использовать компактную версию кода.
 
 ```php
-function showList($employees)
+function showList(array $employees): void
 {
     foreach ($employees as $employee) {
         render([
