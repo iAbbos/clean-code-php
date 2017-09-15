@@ -36,12 +36,12 @@
      * [Композиция лучше наследования](#Композиция-лучше-наследования)
      * [Избегать Текучий интерфейс (Fluent interface)](#Избегать-Текучий-интерфейс-fluent-interface)
   6. [SOLID](#solid)
-     * [Single Responsibility Principle (SRP)](#single-responsibility-principle-srp)
-     * [Open/Closed Principle (OCP)](#openclosed-principle-ocp)
-     * [Liskov Substitution Principle (LSP)](#liskov-substitution-principle-lsp)
-     * [Interface Segregation Principle (ISP)](#interface-segregation-principle-isp)
-     * [Dependency Inversion Principle (DIP)](#dependency-inversion-principle-dip)
-  7. [Don’t repeat yourself (DRY)](#dont-repeat-yourself-dry)
+     * [Принцип единственной ответственности (Single Responsibility Principle, SRP)](#Принцип-единственной-ответственности-single-responsibility-principle-srp)
+     * [Принцип открытости/закрытости (Open/Closed Principle, OCP)](#Принцип-открытостизакрытости-openclosed-principle-ocp)
+     * [Принцип подстановки Барбары Лисков (Liskov Substitution Principle, LSP)](#Принцип-подстановки-Барбары-Лисков-liskov-substitution-principle-lsp)
+     * [Принцип разделения интерфейса (Interface Segregation Principle, ISP)](#Принцип-разделения-интерфейса-interface-segregation-principle-isp)
+     * [Принцип инверсии зависимостей (Dependency Inversion Principle, DIP)](#Принцип-инверсии-зависимостей-dependency-inversion-principle-dip)
+  7. [Не повторяйся (Don’t repeat yourself, DRY)](#Не-повторяйся-dont-repeat-yourself-dry)
   8. [Переводы](#Переводы)
 
 ## Введение
@@ -765,7 +765,7 @@ $configuration = new Configuration([
 Шаблон проектирования Одиночка (Singleton) является [антипаттерном](https://ru.wikipedia.org/wiki/Одиночка_(шаблон_проектирования)). Перефразируем Brian Button:
 
 1. Как правило, одиночки используются в качестве **глобального экземпляра**, почему это так плохо? Потому, что вы **скрываете зависимости вашего приложения** в своем коде, вместо того, чтобы сделать их явными через интерфейсы. Сделать что-то глобальным, чтобы избежать его распространения - это [чем-то попахивает](https://ru.wikipedia.org/wiki/Код_с_запашком).
-2. Одиночки нарушают принцип [единой ответственности](#single-responsibility-principle-srp): в силу того, что **они контролируют собственное создание и жизненный цикл**.
+2. Одиночки нарушают принцип [единой ответственности](#Принцип-единственной-ответственности-single-responsibility-principle-srp): в силу того, что **они контролируют собственное создание и жизненный цикл**.
 3. Одиночки по своей сути приводят к тому, что код получается тесно [связанным](https://ru.wikipedia.org/wiki/Зацепление (программирование)). Это во многих случаях **затрудняет его тестирование**.
 4. Одиночки несут состояние на протяжении всей жизни приложения. Еще один удар по тестированию, **так как вы можете столкнуться с ситуацией, когда необходимо закончить тесты**, что является большим нет для модульных тестов. Зачем? Потому что каждый модульный тест должен быть независимым от другого.
 
@@ -1046,7 +1046,7 @@ inventoryTracker('apples', $request, 'www.inventory-awesome.io');
 * При наследовании такого класса вы можете переопределить функциональность по умолчанию.
 * Вы можете лениво загружать свойства объекта, например получая их с сервера.
 
-Также это часть принципа [Открытости/Закрытости](#openclosed-principle-ocp), входящего в набор объектно ориентированных принципов проектирования.
+Также это часть принципа [Открытости/Закрытости](#Принцип-открытостизакрытости-openclosed-principle-ocp), входящего в набор объектно ориентированных принципов проектирования.
 
 **Плохо:**
 
@@ -1339,13 +1339,13 @@ $car->dump();
 
 **SOLID** is the mnemonic acronym introduced by Michael Feathers for the first five principles named by Robert Martin, which meant five basic principles of object-oriented programming and design.
 
- * [S: Single Responsibility Principle (SRP)](#single-responsibility-principle-srp)
- * [O: Open/Closed Principle (OCP)](#openclosed-principle-ocp)
- * [L: Liskov Substitution Principle (LSP)](#liskov-substitution-principle-lsp)
- * [I: Interface Segregation Principle (ISP)](#interface-segregation-principle-isp)
- * [D: Dependency Inversion Principle (DIP)](#dependency-inversion-principle-dip)
+ * [S: Принцип единственной ответственности (Single Responsibility Principle, SRP)](#Принцип-единственной-ответственности-single-responsibility-principle-srp)
+ * [O: Принцип открытости/закрытости (Open/Closed Principle, OCP)](#Принцип-открытостизакрытости-openclosed-principle-ocp)
+ * [L: Принцип подстановки Барбары Лисков (Liskov Substitution Principle, LSP)](#Принцип-подстановки-Барбары-Лисков-liskov-substitution-principle-lsp)
+ * [I: Принцип разделения интерфейса (Interface Segregation Principle, ISP)](#Принцип-разделения-интерфейса-interface-segregation-principle-isp)
+ * [D: Принцип инверсии зависимостей (Dependency Inversion Principle, DIP)](#Принцип-инверсии-зависимостей-dependency-inversion-principle-dip)
 
-### Single Responsibility Principle (SRP)
+### Принцип единственной ответственности (Single Responsibility Principle, SRP)
 
 As stated in Clean Code, "There should never be more than one reason for a class
 to change". It's tempting to jam-pack a class with a lot of functionality, like
@@ -1422,7 +1422,7 @@ class UserSettings
 
 **[⬆ вернуться к началу](#Содержание)**
 
-### Open/Closed Principle (OCP)
+### Принцип открытости/закрытости (Open/Closed Principle, OCP)
 
 As stated by Bertrand Meyer, "software entities (classes, modules, functions,
 etc.) should be open for extension, but closed for modification." What does that
@@ -1536,7 +1536,7 @@ class HttpRequester
 
 **[⬆ вернуться к началу](#Содержание)**
 
-### Liskov Substitution Principle (LSP)
+### Принцип подстановки Барбары Лисков (Liskov Substitution Principle, LSP)
 
 This is a scary term for a very simple concept. It's formally defined as "If S
 is a subtype of T, then objects of type T may be replaced with objects of type S
@@ -1677,7 +1677,7 @@ renderLargeRectangles($shapes);
 
 **[⬆ вернуться к началу](#Содержание)**
 
-### Interface Segregation Principle (ISP)
+### Принцип разделения интерфейса (Interface Segregation Principle, ISP)
 
 ISP states that "Clients should not be forced to depend upon interfaces that
 they do not use." 
@@ -1768,7 +1768,7 @@ class Robot implements Workable
 
 **[⬆ вернуться к началу](#Содержание)**
 
-### Dependency Inversion Principle (DIP)
+### Принцип инверсии зависимостей (Dependency Inversion Principle, DIP)
 
 This principle states two essential things:
 1. High-level modules should not depend on low-level modules. Both should
@@ -1860,7 +1860,7 @@ class Manager
 
 **[⬆ вернуться к началу](#Содержание)**
 
-## Don’t repeat yourself (DRY)
+## Не повторяйся (Don’t repeat yourself, DRY)
 
 Постарайтесь соблюдать принцип [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself).
 
