@@ -68,7 +68,7 @@ $ymdstr = $moment->format('y-m-d');
 $currentDate = $moment->format('y-m-d');
 ```
 
-**[⬆ вернуться к началу](#table-of-contents)**
+**[⬆ вернуться к началу](#Содержание)**
 
 ### Для одного типа переменных используйте единый словарь
 
@@ -87,7 +87,7 @@ getUserProfile();
 getUser();
 ```
 
-**[⬆ вернуться к началу](#table-of-contents)**
+**[⬆ вернуться к началу](#Содержание)**
 
 ### Используйте имена, по которым удобно искать (часть 1)
 
@@ -133,7 +133,7 @@ if ($user->access & User::ACCESS_UPDATE) {
 }
 ```
 
-**[⬆ вернуться к началу](#table-of-contents)**
+**[⬆ вернуться к началу](#Содержание)**
 
 ### Используйте пояснительные переменные
 
@@ -172,7 +172,7 @@ preg_match($cityZipCodeRegex, $address, $matches);
 saveCityZipCode($matches['city'], $matches['zipCode']);
 ```
 
-**[⬆ вернуться к началу](#table-of-contents)**
+**[⬆ вернуться к началу](#Содержание)**
 
 ### Избегайте глубоких вложений (часть 1)
 
@@ -221,7 +221,7 @@ function isShopOpen($day)
 }
 ```
 
-**[⬆ вернуться к началу](#table-of-contents)**
+**[⬆ вернуться к началу](#Содержание)**
 
 ### Избегайте глубоких вложений (часть 2)
 
@@ -267,7 +267,7 @@ function fibonacci($n)
 }
 ```
 
-**[⬆ вернуться к началу](#table-of-contents)**
+**[⬆ вернуться к началу](#Содержание)**
 
 ### Избегайте ментального сопоставления
 
@@ -305,7 +305,7 @@ foreach ($locations as $location) {
 }
 ```
 
-**[⬆ вернуться к началу](#table-of-contents)**
+**[⬆ вернуться к началу](#Содержание)**
 
 ### Не добавляйте ненужный контекст
 
@@ -337,7 +337,7 @@ class Car
 }
 ```
 
-**[⬆ вернуться к началу](#table-of-contents)**
+**[⬆ вернуться к началу](#Содержание)**
 
 ### Вместо сокращённых или условных используйте аргументы по умолчанию
 
@@ -375,7 +375,7 @@ function createMicrobrewery(string $breweryName = 'Hipster Brew Co.')
 }
 ```
 
-**[⬆ вернуться к началу](#table-of-contents)**
+**[⬆ вернуться к началу](#Содержание)**
 
 ## Функции
 
@@ -417,7 +417,7 @@ function createMenu(MenuConfig $config)
 }
 ```
 
-**[⬆ вернуться к началу](#table-of-contents)**
+**[⬆ вернуться к началу](#Содержание)**
 
 ### Функции должны делать что-то одно
 
@@ -459,7 +459,7 @@ function isClientActive($client)
 }
 ```
 
-**[⬆ вернуться к началу](#table-of-contents)**
+**[⬆ вернуться к началу](#Содержание)**
 
 ### Имена функций должны быть говорящими
 
@@ -499,7 +499,7 @@ $message = new Email(...);
 $message->send();
 ```
 
-**[⬆ вернуться к началу](#table-of-contents)**
+**[⬆ вернуться к началу](#Содержание)**
 
 ### Функции должны быть лишь одним уровнем абстракции
 
@@ -635,7 +635,7 @@ class BetterJSAlternative
 }
 ```
 
-**[⬆ вернуться к началу](#table-of-contents)**
+**[⬆ вернуться к началу](#Содержание)**
 
 ### Не используйте флаги в качестве параметров функций
 
@@ -668,7 +668,7 @@ function createTempFile($name)
 }
 ```
 
-**[⬆ вернуться к началу](#table-of-contents)**
+**[⬆ вернуться к началу](#Содержание)**
 
 ### Избегайте побочных эффектов
 
@@ -712,7 +712,7 @@ var_dump($name); // 'Ryan McDermott';
 var_dump($newName); // ['Ryan', 'McDermott'];
 ```
 
-**[⬆ вернуться к началу](#table-of-contents)**
+**[⬆ вернуться к началу](#Содержание)**
 
 ### Не пишите в глобальные функции
 
@@ -758,7 +758,7 @@ $configuration = new Configuration([
 
 И теперь вы должны использовать экземпляр класса `Configuration` в своем приложении.
 
-**[⬆ вернуться к началу](#table-of-contents)**
+**[⬆ вернуться к началу](#Содержание)**
 
 ### Не используйте шаблон Singleton
 
@@ -819,7 +819,7 @@ $connection = new DBConnection($dsn);
 
 И теперь вы должны использовать экземпляр класса `DBConnection` в своем приложении.
 
-**[⬆ вернуться к началу](#table-of-contents)**
+**[⬆ вернуться к началу](#Содержание)**
 
 ### Инкапсулирование условных выражений
 
@@ -839,7 +839,7 @@ if ($article->isPublished()) {
 }
 ```
 
-**[⬆ вернуться к началу](#table-of-contents)**
+**[⬆ вернуться к началу](#Содержание)**
 
 ### Избегайте негативных условных выражений
 
@@ -870,7 +870,7 @@ if (isDOMNodePresent($node)) {
 }
 ```
 
-**[⬆ вернуться к началу](#table-of-contents)**
+**[⬆ вернуться к началу](#Содержание)**
 
 ### Избегайте условных выражений
 
@@ -938,7 +938,7 @@ class Cessna implements Airplane
 }
 ```
 
-**[⬆ вернуться к началу](#table-of-contents)**
+**[⬆ вернуться к началу](#Содержание)**
 
 ### Избегайте проверки типов (часть 1)
 
@@ -966,7 +966,7 @@ function travelToTexas(Traveler $vehicle)
 }
 ```
 
-**[⬆ вернуться к началу](#table-of-contents)**
+**[⬆ вернуться к началу](#Содержание)**
 
 ### Избегайте проверки типов (часть 2)
 
@@ -994,7 +994,7 @@ function combine(int $val1, int $val2)
 }
 ```
 
-**[⬆ вернуться к началу](#table-of-contents)**
+**[⬆ вернуться к началу](#Содержание)**
 
 ### Убирайте мёртвый код
 
@@ -1029,7 +1029,7 @@ $request = requestModule($requestUrl);
 inventoryTracker('apples', $request, 'www.inventory-awesome.io');
 ```
 
-**[⬆ вернуться к началу](#table-of-contents)**
+**[⬆ вернуться к началу](#Содержание)**
 
 
 ## Объекты и структуры данных
@@ -1105,7 +1105,7 @@ $bankAccount->withdrawBalance($shoesPrice);
 $balance = $bankAccount->getBalance();
 ```
 
-**[⬆ вернуться к началу](#table-of-contents)**
+**[⬆ вернуться к началу](#Содержание)**
 
 ### У объектов должны быть private/protected компоненты
 
@@ -1148,7 +1148,7 @@ $employee = new Employee('John Doe');
 echo 'Employee name: '.$employee->getName(); // Employee name: John Doe
 ```
 
-**[⬆ вернуться к началу](#table-of-contents)**
+**[⬆ вернуться к началу](#Содержание)**
 
 ## Классы
 
@@ -1237,7 +1237,7 @@ class Employee
 }
 ```
 
-**[⬆ вернуться к началу](#table-of-contents)**
+**[⬆ вернуться к началу](#Содержание)**
 
 ### Избегать Текучий интерфейс
 
@@ -1339,7 +1339,7 @@ $car->setModel('F-150');
 $car->dump();
 ```
 
-**[⬆ вернуться к началу](#table-of-contents)**
+**[⬆ вернуться к началу](#Содержание)**
 
 ## SOLID
 
@@ -1426,7 +1426,7 @@ class UserSettings
 }
 ```
 
-**[⬆ вернуться к началу](#table-of-contents)**
+**[⬆ вернуться к началу](#Содержание)**
 
 ### Open/Closed Principle (OCP)
 
@@ -1540,7 +1540,7 @@ class HttpRequester
 }
 ```
 
-**[⬆ вернуться к началу](#table-of-contents)**
+**[⬆ вернуться к началу](#Содержание)**
 
 ### Liskov Substitution Principle (LSP)
 
@@ -1681,7 +1681,7 @@ $shapes = [new Rectangle(), new Rectangle(), new Square()];
 renderLargeRectangles($shapes);
 ```
 
-**[⬆ вернуться к началу](#table-of-contents)**
+**[⬆ вернуться к началу](#Содержание)**
 
 ### Interface Segregation Principle (ISP)
 
@@ -1772,7 +1772,7 @@ class Robot implements Workable
 }
 ```
 
-**[⬆ вернуться к началу](#table-of-contents)**
+**[⬆ вернуться к началу](#Содержание)**
 
 ### Dependency Inversion Principle (DIP)
 
@@ -1864,7 +1864,7 @@ class Manager
 }
 ```
 
-**[⬆ вернуться к началу](#table-of-contents)**
+**[⬆ вернуться к началу](#Содержание)**
 
 ## Don’t repeat yourself (DRY)
 
@@ -1951,7 +1951,7 @@ function showList($employees)
 }
 ```
 
-**[⬆ вернуться к началу](#table-of-contents)**
+**[⬆ вернуться к началу](#Содержание)**
 
 ## Переводы
 
@@ -1963,4 +1963,4 @@ function showList($employees)
  * ![ru](https://raw.githubusercontent.com/gosquared/flags/master/flags/flags/shiny/24/Russia.png) **Русский:**
    * [peter-gribanov/clean-code-php](https://github.com/peter-gribanov/clean-code-php)
 
-**[⬆ вернуться к началу](#table-of-contents)**
+**[⬆ вернуться к началу](#Содержание)**
