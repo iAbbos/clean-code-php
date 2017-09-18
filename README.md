@@ -951,7 +951,7 @@ PHP не типизирован, т. е. ваши функции могут пр
 function travelToTexas($vehicle): void
 {
     if ($vehicle instanceof Bicycle) {
-        $vehicle->peddleTo(new Location('texas'));
+        $vehicle->pedalTo(new Location('texas'));
     } elseif ($vehicle instanceof Car) {
         $vehicle->driveTo(new Location('texas'));
     }
@@ -1106,6 +1106,14 @@ $balance = $bankAccount->getBalance();
 **[⬆ вернуться к началу](#Содержание)**
 
 ### У объектов должны быть private/protected компоненты
+
+* `public` methods and properties are most dangerous for changes, because some outside code may easily rely on them and you can't control what code relies on them. **Modifications in class are dangerous for all users of class.**
+* `protected` modifier are as dangerous as public, because they are available in scope of any child class. This effectively means that difference between public and protected is only in access mechanism, but encapsulation guarantee remains the same. **Modifications in class are dangerous for all descendant classes.**
+* `private` modifier guarantees that code is **dangerous to modify only in boundaries of single class** (you are safe for modifications and you won't have [Jenga effect](http://www.urbandictionary.com/define.php?term=Jengaphobia&defid=2494196)).
+
+Therefore, use `private` by default and `public/protected` when you need to provide access for external classes.
+
+For more informations you can read the [blog post](http://fabien.potencier.org/pragmatism-over-theory-protected-vs-private.html) on this topic written by [Fabien Potencier](https://github.com/fabpot).
 
 **Плохо:**
 
@@ -1703,7 +1711,7 @@ class Robot implements Employee
 
 **Хорошо:**
 
-Not every worker is an employee, but every employee is an worker.
+Not every worker is an employee, but every employee is a worker.
 
 ```php
 interface Workable
@@ -1922,12 +1930,19 @@ function showList(array $employees): void
 
 На других языках:
 
- * ![en](https://raw.githubusercontent.com/gosquared/flags/master/flags/flags/shiny/24/United-Kingdom.png) **Английский:**
+ * :uk: **Английский:**
    * [jupeter/clean-code-php](https://github.com/jupeter/clean-code-php)
- * ![cn](https://raw.githubusercontent.com/gosquared/flags/master/flags/flags/shiny/24/China.png) **Китайский:**
+ * :cn: **Китайский:**
    * [yangweijie/clean-code-php](https://github.com/yangweijie/clean-code-php)
    * [php-cpm/clean-code-php](https://github.com/php-cpm/clean-code-php)
- * ![ru](https://raw.githubusercontent.com/gosquared/flags/master/flags/flags/shiny/24/Russia.png) **Русский:**
+   * [gbcr/clean-code-php](https://github.com/gbcr/clean-code-php)
+ * :ru: **Русский:**
    * [peter-gribanov/clean-code-php](https://github.com/peter-gribanov/clean-code-php)
+* :brazil: **Португальский:**
+   * [fabioars/clean-code-php](https://github.com/fabioars/clean-code-php)
+   * [jeanjar/clean-code-php](https://github.com/jeanjar/clean-code-php/tree/pt-br)
+* :thailand: **Тайский:**
+   * [panuwizzle/clean-code-php](https://github.com/panuwizzle/clean-code-php)
+
 
 **[⬆ вернуться к началу](#Содержание)**
