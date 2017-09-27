@@ -52,7 +52,7 @@
 
 Вдохновленный [clean-code-javascript](https://github.com/ryanmcdermott/clean-code-javascript)
 
-Хотя многие разработчики все еще используют PHP 5, большинство примеров в этой статье работают с PHP 7.1+.
+Хотя многие разработчики все еще используют PHP 5, большинство примеров в этой статье работают только с PHP 7.1+.
 
 ## Переменные
 
@@ -219,7 +219,7 @@ function isShopOpen(string $day): bool
         'friday', 'saturday', 'sunday'
     ];
 
-    return in_array(strtolower($day), $openingDays);
+    return in_array(strtolower($day), $openingDays, true);
 }
 ```
 
@@ -253,12 +253,8 @@ function fibonacci(int $n)
 ```php
 function fibonacci(int $n): int
 {
-    if ($n === 0) {
-        return 0;
-    }
-
-    if ($n === 1) {
-        return 1;
+    if ($n === 0 || $n === 1) {
+        return $n;
     }
 
     if ($n > 50) {
@@ -1584,7 +1580,10 @@ class Square extends Rectangle
     }
 }
 
-function renderLargeRectangles(Rectangle $rectangles): void
+/**
+ * @param Rectangle[] $rectangles
+ */
+function renderLargeRectangles(array $rectangles): void
 {
     foreach ($rectangles as $rectangle) {
         $rectangle->setWidth(4);
@@ -1647,7 +1646,10 @@ class Square extends Shape
     }
 }
 
-function renderLargeRectangles(Shape $rectangles): void
+/**
+ * @param Rectangle[] $rectangles
+ */
+function renderLargeRectangles(array $rectangles): void
 {
     foreach ($rectangles as $rectangle) {
         if ($rectangle instanceof Square) {
@@ -1932,14 +1934,14 @@ function showList(array $employees): void
 
 На других языках:
 
- * :uk: **Английский:**
+* :uk: **Английский:**
    * [jupeter/clean-code-php](https://github.com/jupeter/clean-code-php)
- * :cn: **Китайский:**
-   * [yangweijie/clean-code-php](https://github.com/yangweijie/clean-code-php)
+* :cn: **Китайский:**
    * [php-cpm/clean-code-php](https://github.com/php-cpm/clean-code-php)
-   * [gbcr/clean-code-php](https://github.com/gbcr/clean-code-php)
- * :ru: **Русский:**
+* :ru: **Русский:**
    * [peter-gribanov/clean-code-php](https://github.com/peter-gribanov/clean-code-php)
+* :es: **Испанский:**
+   * [fikoborquez/clean-code-php](https://github.com/fikoborquez/clean-code-php)
 * :brazil: **Португальский:**
    * [fabioars/clean-code-php](https://github.com/fabioars/clean-code-php)
    * [jeanjar/clean-code-php](https://github.com/jeanjar/clean-code-php/tree/pt-br)
