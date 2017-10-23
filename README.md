@@ -143,7 +143,7 @@ if ($user->access & User::ACCESS_UPDATE) {
 
 ```php
 $address = 'One Infinite Loop, Cupertino 95014';
-$cityZipCodeRegex = '/^[^,\\]+[,\\\s]+(.+?)\s*(\d{5})?$/';
+$cityZipCodeRegex = '/^[^,]+,\s*(.+?)\s*(\d{5})$/';
 preg_match($cityZipCodeRegex, $address, $matches);
 
 saveCityZipCode($matches[1], $matches[2]);
@@ -155,7 +155,7 @@ saveCityZipCode($matches[1], $matches[2]);
 
 ```php
 $address = 'One Infinite Loop, Cupertino 95014';
-$cityZipCodeRegex = '/^[^,\\]+[,\\\s]+(.+?)\s*(\d{5})?$/';
+$cityZipCodeRegex = '/^[^,]+,\s*(.+?)\s*(\d{5})$/';
 preg_match($cityZipCodeRegex, $address, $matches);
 
 [, $city, $zipCode] = $matches;
@@ -168,7 +168,7 @@ saveCityZipCode($city, $zipCode);
 
 ```php
 $address = 'One Infinite Loop, Cupertino 95014';
-$cityZipCodeRegex = '/^[^,\\]+[,\\\s]+(?<city>.+?)\s*(?<zipCode>\d{5})?$/';
+$cityZipCodeRegex = '/^[^,]+,\s*(?<city>.+?)\s*(?<zipCode>\d{5})$/';
 preg_match($cityZipCodeRegex, $address, $matches);
 
 saveCityZipCode($matches['city'], $matches['zipCode']);
@@ -1072,7 +1072,7 @@ class BankAccount
       $this->balance = $balance;
     }
 
-    public function withdrawBalance(int $amount): void
+    public function withdraw(int $amount): void
     {
         if ($amount > $this->balance) {
             throw new \Exception('Amount greater than available balance.');
@@ -1081,12 +1081,12 @@ class BankAccount
         $this->balance -= $amount;
     }
 
-    public function depositBalance(int $amount): void
+    public function deposit(int $amount): void
     {
         $this->balance += $amount;
     }
 
-    public function getBalance(): int
+    public function getBalance(): int
     {
         return $this->balance;
     }
@@ -1095,7 +1095,7 @@ class BankAccount
 $bankAccount = new BankAccount();
 
 // Buy shoes...
-$bankAccount->withdrawBalance($shoesPrice);
+$bankAccount->withdraw($shoesPrice);
 
 // Get balance
 $balance = $bankAccount->getBalance();
