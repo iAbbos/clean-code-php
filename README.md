@@ -1947,6 +1947,8 @@ function showList(array $employees): void
    * [jeanjar/clean-code-php](https://github.com/jeanjar/clean-code-php/tree/pt-br)
 * :thailand: **Тайский:**
    * [panuwizzle/clean-code-php](https://github.com/panuwizzle/clean-code-php)
+* :fr: **Французский:**
+   * [errorname/clean-code-php](https://github.com/errorname/clean-code-php)
 
 
 **[⬆ вернуться к началу](#Содержание)**
