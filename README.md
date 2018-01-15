@@ -14,7 +14,9 @@
      * [Избегайте ментального сопоставления](#Избегайте-ментального-сопоставления)
      * [Не добавляйте ненужный контекст](#Не-добавляйте-ненужный-контекст)
      * [Вместо сокращённых или условных используйте аргументы по умолчанию](#Вместо-сокращённых-или-условных-используйте-аргументы-по-умолчанию)
-  3. [Функции](#Функции)
+  3. [Сравнение](#comparaison)
+     * [Используйте идентичное сравнение](#identical_comparison)
+  4. [Функции](#Функции)
      * [Аргументы функций (в идеале два или меньше)](#Аргументы-функций-в-идеале-два-или-меньше)
      * [Функции должны делать что-то одно](#Функции-должны-делать-что-то-одно)
      * [Имена функций должны быть говорящими](#Имена-функций-должны-быть-говорящими)
@@ -29,26 +31,30 @@
      * [Избегайте проверки типов (часть 1))](#Избегайте-проверки-типов-часть-1)
      * [Избегайте проверки типов (часть 2)](#Избегайте-проверки-типов-часть-2)
      * [Убирайте мёртвый код](#Убирайте-мёртвый-код)
-  4. [Объекты и структуры данных](#Объекты-и-структуры-данных)
+  5. [Объекты и структуры данных](#Объекты-и-структуры-данных)
      * [Используйте инкапсуляцию объектов](#Используйте-инкапсуляцию-объектов)
      * [У объектов должны быть private/protected компоненты](#У-объектов-должны-быть-privateprotected-компоненты)
-  5. [Классы](#Классы)
+  6. [Классы](#Классы)
      * [Композиция лучше наследования](#Композиция-лучше-наследования)
      * [Избегать Текучий интерфейс (Fluent interface)](#Избегать-Текучий-интерфейс-fluent-interface)
-  6. [SOLID](#solid)
+  7. [SOLID](#solid)
      * [Принцип единственной ответственности (Single Responsibility Principle, SRP)](#Принцип-единственной-ответственности-single-responsibility-principle-srp)
      * [Принцип открытости/закрытости (Open/Closed Principle, OCP)](#Принцип-открытостизакрытости-openclosed-principle-ocp)
      * [Принцип подстановки Барбары Лисков (Liskov Substitution Principle, LSP)](#Принцип-подстановки-Барбары-Лисков-liskov-substitution-principle-lsp)
      * [Принцип разделения интерфейса (Interface Segregation Principle, ISP)](#Принцип-разделения-интерфейса-interface-segregation-principle-isp)
      * [Принцип инверсии зависимостей (Dependency Inversion Principle, DIP)](#Принцип-инверсии-зависимостей-dependency-inversion-principle-dip)
-  7. [Не повторяйся (Don’t repeat yourself, DRY)](#Не-повторяйся-dont-repeat-yourself-dry)
-  8. [Переводы](#Переводы)
+  8. [Не повторяйся (Don’t repeat yourself, DRY)](#Не-повторяйся-dont-repeat-yourself-dry)
+  9. [Переводы](#Переводы)
 
 ## Введение
 
-Это принципы разработки ПО, взятые из книги [*Clean Code*](https://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882) Роберта Мартина и адаптированные для PHP. Это руководство не по стилям программирования, а по созданию читабельного, многократно используемого и пригодного для рефакторинга кода на PHP.
+Это принципы разработки ПО, взятые из книги
+[*Clean Code*](https://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882) Роберта Мартина и
+адаптированные для PHP. Это руководство не по стилям программирования, а по созданию читабельного, многократно
+используемого и пригодного для рефакторинга кода на PHP.
 
-Не каждый из этих принципов должен строго соблюдаться, и ещё с меньшим количеством все будут согласны. Это лишь рекомендации, не более, но все они кодифицированы в многолетнем коллективном опыте автора *Clean Code*.
+Не каждый из этих принципов должен строго соблюдаться, и ещё с меньшим количеством все будут согласны. Это лишь
+рекомендации, не более, но все они кодифицированы в многолетнем коллективном опыте автора *Clean Code*.
 
 Вдохновленный [clean-code-javascript](https://github.com/ryanmcdermott/clean-code-javascript)
 
@@ -93,7 +99,9 @@ getUser();
 
 ### Используйте имена, по которым удобно искать (часть 1)
 
-Мы прочитаем больше кода, чем когда-либо напишем. Поэтому важно писать такой код, который будет читабелен и удобен для поиска. Но давая переменным имена, бесполезные для понимания нашей программы, мы мешаем будущим читателям. Используйте такие имена, по которым удобно искать.
+Мы прочитаем больше кода, чем когда-либо напишем. Поэтому важно писать такой код, который будет читабелен и удобен для
+поиска. Но давая переменным имена, бесполезные для понимания нашей программы, мы мешаем будущим читателям. Используйте
+такие имена, по которым удобно искать.
 
 **Плохо:**
 
@@ -126,7 +134,7 @@ class User
 {
     const ACCESS_READ = 1;
     const ACCESS_CREATE = 2;
-    const ACCESS_UPDATE = 4;
+    const ACCESS_UPDATE = 4;
     const ACCESS_DELETE = 8;
 }
 
@@ -364,7 +372,7 @@ function createMicrobrewery($name = null): void
 
 **Хорошо:**
 
-Если вы используете только PHP 7+, то вы можете использовать [контроль типов](http://php.net/manual/en/functions.arguments.php#functions.arguments.type-declaration) и быть увереным, что переменная `$breweryName` никогда не будет `NULL`.
+Вы можете использовать [контроль типов](http://php.net/manual/en/functions.arguments.php#functions.arguments.type-declaration) и быть увереным, что переменная `$breweryName` никогда не будет `NULL`.
 
 ```php
 function createMicrobrewery(string $breweryName = 'Hipster Brew Co.'): void
@@ -374,6 +382,41 @@ function createMicrobrewery(string $breweryName = 'Hipster Brew Co.'): void
 ```
 
 **[⬆ вернуться к началу](#Содержание)**
+
+## Сравнение
+
+### Используйте [идентичное сравнение](http://php.net/manual/en/language.operators.comparison.php)
+
+**Не хорошо:**
+
+При использовании простого сравнения, string будет преобразован в integer.
+
+```php
+$a = '42';
+$b = 42;
+
+if ($a != $b) {
+   // The expression will always passes
+}
+```
+
+Сравнение `$a != $b` возвращает `FALSE`, но на самом деле это `TRUE`!
+Строка `42` отличается от строки числа `42`. 
+
+**Хорошо:**
+
+Используя идентичное сравнение, будет сравнивать тип и значение.
+
+```php
+if ($a !== $b) {
+    // The expression is verified
+}
+```
+
+Сравнение `$a !== $b` возвращает `TRUE`.
+
+**[⬆ вернуться к началу](#Содержание)**
+
 
 ## Функции
 
@@ -1602,9 +1645,6 @@ renderLargeRectangles($rectangles);
 ```php
 abstract class Shape
 {
-    protected $width = 0;
-    protected $height = 0;
-
     abstract public function getArea(): int;
 
     public function render(int $area): void
@@ -1615,13 +1655,12 @@ abstract class Shape
 
 class Rectangle extends Shape
 {
-    public function setWidth(int $width): void
+    private $width;
+    private $height;
+
+    public function __construct(int $width, int $height)
     {
         $this->width = $width;
-    }
-
-    public function setHeight(int $height): void
-    {
         $this->height = $height;
     }
 
@@ -1633,9 +1672,9 @@ class Rectangle extends Shape
 
 class Square extends Shape
 {
-    private $length = 0;
+    private $length;
 
-    public function setLength(int $length): void
+    public function __construct(int $length)
     {
         $this->length = $length;
     }
@@ -1652,19 +1691,12 @@ class Square extends Shape
 function renderLargeRectangles(array $rectangles): void
 {
     foreach ($rectangles as $rectangle) {
-        if ($rectangle instanceof Square) {
-            $rectangle->setLength(5);
-        } elseif ($rectangle instanceof Rectangle) {
-            $rectangle->setWidth(4);
-            $rectangle->setHeight(5);
-        }
-
         $area = $rectangle->getArea(); 
         $rectangle->render($area);
     }
 }
 
-$shapes = [new Rectangle(), new Rectangle(), new Square()];
+$shapes = [new Rectangle(4, 5), new Rectangle(4, 5), new Square(5)];
 renderLargeRectangles($shapes);
 ```
 
