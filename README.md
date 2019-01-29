@@ -37,6 +37,7 @@
   6. [Классы](#Классы)
      * [Композиция лучше наследования](#Композиция-лучше-наследования)
      * [Избегать Текучий интерфейс (Fluent interface)](#Избегать-Текучий-интерфейс-fluent-interface)
+     * [Предпочтительней `final` классы](#prefer-final-classes)
   7. [SOLID](#solid)
      * [Принцип единственной ответственности (Single Responsibility Principle, SRP)](#Принцип-единственной-ответственности-single-responsibility-principle-srp)
      * [Принцип открытости/закрытости (Open/Closed Principle, OCP)](#Принцип-открытостизакрытости-openclosed-principle-ocp)
@@ -56,7 +57,7 @@
 Не каждый из этих принципов должен строго соблюдаться, и ещё с меньшим количеством все будут согласны. Это лишь
 рекомендации, не более, но все они кодифицированы в многолетнем коллективном опыте автора *Clean Code*.
 
-Вдохновленный [clean-code-javascript](https://github.com/ryanmcdermott/clean-code-javascript)
+Вдохновленный [clean-code-javascript](https://github.com/ryanmcdermott/clean-code-javascript).
 
 Хотя многие разработчики все еще используют PHP 5, большинство примеров в этой статье работают только с PHP 7.1+.
 
@@ -757,7 +758,7 @@ var_dump($newName); // ['Ryan', 'McDermott'];
 
 ### Не пишите в глобальные функции
 
-Засорение глобалами — дурная привычка в любом языке, потому что вы можете конфликтовать с другой библиотекой, а пользователи вашего API не будут об этом знать, пока не получат исключение в production. Приведу пример: вам нужен конфигурационный массив. Вы пишете глобальную функцию вроде `config()`, но она может конфликтовать с другой библиотекой, пытающейся делать то же самое.
+Засорение глобалами — дурная привычка в любом языке, потому что вы можете конфликтовать с другой библиотекой, а пользователи вашего API не будут об этом знать, пока не получат исключение в production. Приведу пример: вам нужен конфигурационный массив? Вы пишете глобальную функцию вроде `config()`, но она может конфликтовать с другой библиотекой, пытающейся делать то же самое.
 
 **Плохо:**
 
@@ -1292,10 +1293,10 @@ class Employee
 
 Хотя могут быть некоторые случаи в которых этот шаблон уменьшает многословность кода (например, [PHPUnit Mock Builder](https://phpunit.de/manual/current/en/test-doubles.html) или [Doctrine Query Builder](http://docs.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/query-builder.html)), но чаще всего это происходит с некоторыми издержками:
 
-1. Нарушение [Инкапсуляции](https://ru.wikipedia.org/wiki/Инкапсуляция_(программирование))
-2. Нарушение [Декораторов](https://ru.wikipedia.org/wiki/Декоратор_(шаблон_проектирования))
-3. Затрудняет [мокинг (mock)](https://ru.wikipedia.org/wiki/Mock-объект) в тестах
-4. Осложняет чтение diff коммитов
+1. Нарушение [Инкапсуляции](https://ru.wikipedia.org/wiki/Инкапсуляция_(программирование)).
+2. Нарушение [Декораторов](https://ru.wikipedia.org/wiki/Декоратор_(шаблон_проектирования)).
+3. Затрудняет [мокинг (mock)](https://ru.wikipedia.org/wiki/Mock-объект) в тестах.
+4. Осложняет чтение diff коммитов.
 
 Для получения дополнительной информации вы можете прочитать [сообщение в блоге](https://ocramius.github.io/blog/fluent-interfaces-are-evil/), написанное [Marco Pivetta](https://github.com/Ocramius).
 
@@ -1380,6 +1381,74 @@ $car->setColor('pink');
 $car->setMake('Ford');
 $car->setModel('F-150');
 $car->dump();
+```
+
+**[⬆ вернуться к началу](#Содержание)**
+
+### Prefer final classes
+
+`final` должен использоваться всякий раз, когда это возможно:
+
+1. Это предотвращает неконтролируемую цепочку наследования.
+2. Поощряет [композицию](#prefer-composition-over-inheritance).
+3. Поощряет [Single Responsibility Pattern](#single-responsibility-principle-srp).
+4. Он поощряет использовать ваши открытые методы вместо расширения класса для получения доступа к защищенным.
+5. Это позволяет вам изменять ваш код без вероятности сломать приложения, которые используют ваш класс.
+
+Единственное условие - ваш класс должен реализовывать интерфейс, и не определять никакие другие открытые методы.
+
+Для получения дополнительной информации вы можете прочитать [сообщение в блоге](https://ocramius.github.io/blog/when-to-declare-classes-final/) на эту тему, написанное [Marco Pivetta (Ocramius)](https://ocramius.github.io/).
+
+**Плохо:**
+
+```php
+final class Car
+{
+    private $color;
+    
+    public function __construct($color)
+    {
+        $this->color = $color;
+    }
+    
+    /**
+     * @return string The color of the vehicle
+     */
+    public function getColor() 
+    {
+        return $this->color;
+    }
+}
+```
+
+**Хорошо:**
+
+```php
+interface Vehicle
+{
+    /**
+     * @return string The color of the vehicle
+     */
+    public function getColor();
+}
+
+final class Car implements Vehicle
+{
+    private $color;
+    
+    public function __construct($color)
+    {
+        $this->color = $color;
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function getColor() 
+    {
+        return $this->color;
+    }
+}
 ```
 
 **[⬆ вернуться к началу](#Содержание)**
@@ -1589,11 +1658,6 @@ class Rectangle
     protected $width = 0;
     protected $height = 0;
 
-    public function render(int $area): void
-    {
-        // ...
-    }
-
     public function setWidth(int $width): void
     {
         $this->width = $width;
@@ -1623,40 +1687,40 @@ class Square extends Rectangle
     }
 }
 
-/**
- * @param Rectangle[] $rectangles
- */
-function renderLargeRectangles(array $rectangles): void
+function printArea(Rectangle $rectangle): void
 {
-    foreach ($rectangles as $rectangle) {
-        $rectangle->setWidth(4);
-        $rectangle->setHeight(5);
-        $area = $rectangle->getArea(); // Плохо: Will return 25 for Square. Should be 20.
-        $rectangle->render($area);
-    }
+    $rectangle->setWidth(4);
+    $rectangle->setHeight(5);
+ 
+    // BAD: Will return 25 for Square. Should be 20.
+    echo sprintf('%s has area %d.', get_class($rectangle), $rectangle->getArea()).PHP_EOL;
 }
 
-$rectangles = [new Rectangle(), new Rectangle(), new Square()];
-renderLargeRectangles($rectangles);
+$rectangles = [new Rectangle(), new Square()];
+
+foreach ($rectangles as $rectangle) {
+    printArea($rectangle);
+}
 ```
 
 **Хорошо:**
 
-```php
-abstract class Shape
-{
-    abstract public function getArea(): int;
+Лучший способ - разделить четырехугольники и выделить более общий подтип для обеих фигур.
 
-    public function render(int $area): void
-    {
-        // ...
-    }
+Несмотря на кажущееся сходство квадрата и прямоугольника, они разные.
+Квадрат имеет много общего с ромбом, а прямоугольник с параллелограммом, но они не являются подтипом.
+Квадрат, прямоугольник, ромб и параллелограмм - это отдельные фигуры со своими собственными свойствами, хотя и схожими.
+
+```php
+interface Shape
+{
+    public function getArea(): int;
 }
 
-class Rectangle extends Shape
+class Rectangle implements Shape
 {
-    private $width;
-    private $height;
+    private $width = 0;
+    private $height = 0;
 
     public function __construct(int $width, int $height)
     {
@@ -1670,9 +1734,9 @@ class Rectangle extends Shape
     }
 }
 
-class Square extends Shape
+class Square implements Shape
 {
-    private $length;
+    private $length = 0;
 
     public function __construct(int $length)
     {
@@ -1681,23 +1745,20 @@ class Square extends Shape
 
     public function getArea(): int
     {
-        return pow($this->length, 2);
-    }
+        return $this->length ** 2;
+    }
 }
 
-/**
- * @param Rectangle[] $rectangles
- */
-function renderLargeRectangles(array $rectangles): void
+function printArea(Shape $shape): void
 {
-    foreach ($rectangles as $rectangle) {
-        $area = $rectangle->getArea(); 
-        $rectangle->render($area);
-    }
+    echo sprintf('%s has area %d.', get_class($shape), $shape->getArea()).PHP_EOL;
 }
 
-$shapes = [new Rectangle(4, 5), new Rectangle(4, 5), new Square(5)];
-renderLargeRectangles($shapes);
+$shapes = [new Rectangle(4, 5), new Square(5)];
+
+foreach ($shapes as $shape) {
+    printArea($shape);
+}
 ```
 
 **[⬆ вернуться к началу](#Содержание)**
@@ -1718,7 +1779,7 @@ interface Employee
     public function eat(): void;
 }
 
-class Human implements Employee
+class HumanEmployee implements Employee
 {
     public function work(): void
     {
@@ -1731,7 +1792,7 @@ class Human implements Employee
     }
 }
 
-class Robot implements Employee
+class RobotEmployee implements Employee
 {
     public function work(): void
     {
@@ -1764,7 +1825,7 @@ interface Employee extends Feedable, Workable
 {
 }
 
-class Human implements Employee
+class HumanEmployee implements Employee
 {
     public function work(): void
     {
@@ -1778,7 +1839,7 @@ class Human implements Employee
 }
 
 // robot can only work
-class Robot implements Workable
+class RobotEmployee implements Workable
 {
     public function work(): void
     {
@@ -1981,6 +2042,11 @@ function showList(array $employees): void
    * [panuwizzle/clean-code-php](https://github.com/panuwizzle/clean-code-php)
 * :fr: **Французский:**
    * [errorname/clean-code-php](https://github.com/errorname/clean-code-php)
-
+* :vietnam: **Вьетнамский**
+   * [viethuongdev/clean-code-php](https://github.com/viethuongdev/clean-code-php)
+* :kr: **Корейский:**
+   * [yujineeee/clean-code-php](https://github.com/yujineeee/clean-code-php)
+* :tr: **Турецкий:**
+   * [anilozmen/clean-code-php](https://github.com/anilozmen/clean-code-php)
 
 **[⬆ вернуться к началу](#Содержание)**
