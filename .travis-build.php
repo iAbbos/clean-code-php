@@ -31,7 +31,7 @@ foreach ($readMeFile as $lineNumber => $line) {
                 : '     *'
             ,
             $matches['title'],
-            preg_replace(['/ /', '/[^-\w]+/'], ['-', ''], strtolower($matches['title']))
+            preg_replace(['/ /', '/[^-\w]+/u'], ['-', ''], strtolower($matches['title']))
         );
     }
     if ($tableOfContentsStarted === true && isset($line[0])) {
