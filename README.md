@@ -361,7 +361,7 @@ function createMicrobrewery($breweryName = 'Hipster Brew Co.'): void
 
 **Лучше:**
 
-Это решение мение понятно, чем предыдущая версия, но лучше контролирует значение переменной.
+Это решение менее понятно, чем предыдущая версия, но лучше контролирует значение переменной.
 
 ```php
 function createMicrobrewery($name = null): void
