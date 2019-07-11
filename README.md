@@ -402,7 +402,7 @@ if ($a != $b) {
 ```
 
 Сравнение `$a != $b` возвращает `FALSE`, но на самом деле это `TRUE`!
-Строка `42` отличается от строки числа `42`. 
+Строка `42` отличается от строки числа `42`.
 
 **Хорошо:**
 
@@ -526,7 +526,7 @@ $message->handle();
 **Хорошо:**
 
 ```php
-class Email 
+class Email
 {
     //...
 
@@ -1213,7 +1213,7 @@ echo 'Employee name: '.$employee->getName(); // Employee name: John Doe
 **Плохо:**
 
 ```php
-class Employee 
+class Employee
 {
     private $name;
     private $email;
@@ -1227,14 +1227,14 @@ class Employee
     // ...
 }
 
-// Bad because Employees "have" tax data. 
+// Bad because Employees "have" tax data.
 // EmployeeTaxData is not a type of Employee
 
-class EmployeeTaxData extends Employee 
+class EmployeeTaxData extends Employee
 {
     private $ssn;
     private $salary;
-    
+
     public function __construct(string $name, string $email, string $ssn, string $salary)
     {
         parent::__construct($name, $email);
@@ -1250,7 +1250,7 @@ class EmployeeTaxData extends Employee
 **Хорошо:**
 
 ```php
-class EmployeeTaxData 
+class EmployeeTaxData
 {
     private $ssn;
     private $salary;
@@ -1264,7 +1264,7 @@ class EmployeeTaxData
     // ...
 }
 
-class Employee 
+class Employee
 {
     private $name;
     private $email;
@@ -1405,16 +1405,16 @@ $car->dump();
 final class Car
 {
     private $color;
-    
+
     public function __construct($color)
     {
         $this->color = $color;
     }
-    
+
     /**
      * @return string The color of the vehicle
      */
-    public function getColor() 
+    public function getColor()
     {
         return $this->color;
     }
@@ -1435,16 +1435,16 @@ interface Vehicle
 final class Car implements Vehicle
 {
     private $color;
-    
+
     public function __construct($color)
     {
         $this->color = $color;
     }
-    
+
     /**
      * {@inheritdoc}
      */
-    public function getColor() 
+    public function getColor()
     {
         return $this->color;
     }
@@ -1496,7 +1496,7 @@ class UserSettings
 **Хорошо:**
 
 ```php
-class UserAuth 
+class UserAuth
 {
     private $user;
 
@@ -1504,19 +1504,19 @@ class UserAuth
     {
         $this->user = $user;
     }
-    
+
     public function verifyCredentials(): bool
     {
         // ...
     }
 }
 
-class UserSettings 
+class UserSettings
 {
     private $user;
     private $auth;
 
-    public function __construct(User $user) 
+    public function __construct(User $user)
     {
         $this->user = $user;
         $this->auth = new UserAuth($user);
@@ -1691,7 +1691,7 @@ function printArea(Rectangle $rectangle): void
 {
     $rectangle->setWidth(4);
     $rectangle->setHeight(5);
- 
+
     // BAD: Will return 25 for Square. Should be 20.
     echo sprintf('%s has area %d.', get_class($rectangle), $rectangle->getArea()).PHP_EOL;
 }
