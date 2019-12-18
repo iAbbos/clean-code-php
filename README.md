@@ -411,7 +411,7 @@ $a = '42';
 $b = 42;
 
 if ($a != $b) {
-   // The expression will always passes
+   // The expression will always pass
 }
 ```
 
@@ -423,6 +423,9 @@ if ($a != $b) {
 Используя идентичное сравнение, будет сравнивать тип и значение.
 
 ```php
+$a = '42';
+$b = 42;
+
 if ($a !== $b) {
     // The expression is verified
 }
