@@ -18,7 +18,6 @@
      * [Используйте идентичное сравнение](#Используйте-идентичное-сравнение)
   4. [Функции](#Функции)
      * [Аргументы функций (в идеале два или меньше)](#Аргументы-функций-в-идеале-два-или-меньше)
-     * [Функции должны делать что-то одно](#Функции-должны-делать-что-то-одно)
      * [Имена функций должны быть говорящими](#Имена-функций-должны-быть-говорящими)
      * [Функции должны быть лишь одним уровнем абстракции](#Функции-должны-быть-лишь-одним-уровнем-абстракции)
      * [Не используйте флаги в качестве параметров функций](#Не-используйте-флаги-в-качестве-параметров-функций)
@@ -37,7 +36,7 @@
   6. [Классы](#Классы)
      * [Композиция лучше наследования](#Композиция-лучше-наследования)
      * [Избегать Текучий интерфейс (Fluent interface)](#Избегать-Текучий-интерфейс-fluent-interface)
-     * [Предпочтительней `final` классы](#Предпочтительней-final-классы)
+     * [Предпочтительней final классы](#Предпочтительней-final-классы)
   7. [SOLID](#solid)
      * [Принцип единственной ответственности (Single Responsibility Principle, SRP)](#Принцип-единственной-ответственности-single-responsibility-principle-srp)
      * [Принцип открытости/закрытости (Open/Closed Principle, OCP)](#Принцип-открытостизакрытости-openclosed-principle-ocp)
@@ -122,10 +121,19 @@ $json = $serializer->serialize($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT
 **Плохо:**
 
 ```php
+class User
+{
+    // What the heck is 7 for?
+    public $access = 7;
+}
+
 // What the heck is 4 for?
 if ($user->access & 4) {
     // ...
 }
+
+// What's going on here?
+$user->access ^= 2;
 ```
 
 **Хорошо:**
@@ -133,15 +141,21 @@ if ($user->access & 4) {
 ```php
 class User
 {
-    const ACCESS_READ = 1;
-    const ACCESS_CREATE = 2;
-    const ACCESS_UPDATE = 4;
-    const ACCESS_DELETE = 8;
+    public const ACCESS_READ = 1;
+    public const ACCESS_CREATE = 2;
+    public const ACCESS_UPDATE = 4;
+    public const ACCESS_DELETE = 8;
+
+    // User as default can read, create and update something
+    public $access = self::ACCESS_READ | self::ACCESS_CREATE | self::ACCESS_UPDATE;
 }
 
 if ($user->access & User::ACCESS_UPDATE) {
     // do edit ...
 }
+
+// Deny access rights to create something
+$user->access ^= User::ACCESS_CREATE;
 ```
 
 **[⬆ вернуться к началу](#Содержание)**
@@ -266,7 +280,7 @@ function fibonacci(int $n): int
         return $n;
     }
 
-    if ($n > 50) {
+    if ($n >= 50) {
         throw new \Exception('Not supported');
     }
 
@@ -430,51 +444,19 @@ if ($a !== $b) {
 **Плохо:**
 
 ```php
-function createMenu(string $title, string $body, string $buttonText, bool $cancellable): void
+class Questionnaire
 {
-    // ...
-}
-```
-
-**Хорошо:**
-
-```php
-class MenuConfig
-{
-    public $title;
-    public $body;
-    public $buttonText;
-    public $cancellable = false;
-}
-
-$config = new MenuConfig();
-$config->title = 'Foo';
-$config->body = 'Bar';
-$config->buttonText = 'Baz';
-$config->cancellable = true;
-
-function createMenu(MenuConfig $config): void
-{
-    // ...
-}
-```
-
-**[⬆ вернуться к началу](#Содержание)**
-
-### Функции должны делать что-то одно
-
-Это, безусловно, самое важное правило в разработке ПО. Когда функции делают больше одной вещи, их труднее составлять, тестировать и обосновывать. А если вы можете наделить функции только какими-то одиночными действиями, то их будет легче рефакторить, а ваш код станет гораздо чище. Даже если вы не будете следовать никакой другой рекомендации, кроме этой, то всё равно опередите многих других разработчиков.
-
-**Плохо:**
-
-```php
-function emailClients(array $clients): void
-{
-    foreach ($clients as $client) {
-        $clientRecord = $db->find($client);
-        if ($clientRecord->isActive()) {
-            email($client);
-        }
+    public function __construct(
+        string $firstname,
+        string $lastname,
+        string $patronymic,
+        string $region,
+        string $district,
+        string $city,
+        string $phone,
+        string $email
+    ) {
+        // ...
     }
 }
 ```
@@ -482,22 +464,58 @@ function emailClients(array $clients): void
 **Хорошо:**
 
 ```php
-function emailClients(array $clients): void
+class Name
 {
-    $activeClients = activeClients($clients);
-    array_walk($activeClients, 'email');
+    private $firstname;
+    private $lastname;
+    private $patronymic;
+
+    public function __construct(string $firstname, string $lastname, string $patronymic)
+    {
+        $this->firstname = $firstname;
+        $this->lastname = $lastname;
+        $this->patronymic = $patronymic;
+    }
+
+    // getters ...
 }
 
-function activeClients(array $clients): array
+class City
 {
-    return array_filter($clients, 'isClientActive');
+    private $region;
+    private $district;
+    private $city;
+
+    public function __construct(string $region, string $district, string $city)
+    {
+        $this->region = $region;
+        $this->district = $district;
+        $this->city = $city;
+    }
+
+    // getters ...
 }
 
-function isClientActive(int $client): bool
+class Contact
 {
-    $clientRecord = $db->find($client);
+    private $phone;
+    private $email;
 
-    return $clientRecord->isActive();
+    public function __construct(string $phone, string $email)
+    {
+        $this->phone = $phone;
+        $this->email = $email;
+    }
+
+    // getters ...
+}
+
+class Questionnaire
+{
+    public function __construct(Name $name, City $city, Contact $contact)
+    {
+        // ...
+    }
 }
 ```
 
@@ -550,7 +568,7 @@ $message->send();
 **Плохо:**
 
 ```php
-function parseBetterJSAlternative(string $code): void
+function parseBetterPHPAlternative(string $code): void
 {
     $regexes = [
         // ...
@@ -577,7 +595,7 @@ function parseBetterJSAlternative(string $code): void
 
 **Тоже плохо:**
 
-Мы выполнили некоторые функции, но функция `parseBetterJSAlternative()` все еще очень сложна и не тестируема.
+Мы выполнили некоторые функции, но функция `parseBetterPHPAlternative()` все еще очень сложна и не тестируема.
 
 ```php
 function tokenize(string $code): array
@@ -607,7 +625,7 @@ function lexer(array $tokens): array
     return $ast;
 }
 
-function parseBetterJSAlternative(string $code): void
+function parseBetterPHPAlternative(string $code): void
 {
     $tokens = tokenize($code);
     $ast = lexer($tokens);
@@ -619,7 +637,7 @@ function parseBetterJSAlternative(string $code): void
 
 **Хорошо:**
 
-Лучшим решением является вынесение всех зависимостей из функции `parseBetterJSAlternative()`.
+Лучшим решением является вынесение всех зависимостей из функции `parseBetterPHPAlternative()`.
 
 ```php
 class Tokenizer
@@ -655,7 +673,7 @@ class Lexer
     }
 }
 
-class BetterJSAlternative
+class BetterPHPAlternative
 {
     private $tokenizer;
     private $lexer;
@@ -1003,7 +1021,7 @@ function travelToTexas($vehicle): void
 **Хорошо:**
 
 ```php
-function travelToTexas(Traveler $vehicle): void
+function travelToTexas(Vehicle $vehicle): void
 {
     $vehicle->travelTo(new Location('texas'));
 }
