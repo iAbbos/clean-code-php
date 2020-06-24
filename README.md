@@ -16,6 +16,7 @@
      * [Вместо сокращённых или условных используйте аргументы по умолчанию](#Вместо-сокращённых-или-условных-используйте-аргументы-по-умолчанию)
   3. [Сравнение](#Сравнение)
      * [Используйте идентичное сравнение](#Используйте-идентичное-сравнение)
+     * [Оператор объединения с null](#Оператор-объединения-с-null)
   4. [Функции](#Функции)
      * [Аргументы функций (в идеале два или меньше)](#Аргументы-функций-в-идеале-два-или-меньше)
      * [Имена функций должны быть говорящими](#Имена-функций-должны-быть-говорящими)
@@ -435,6 +436,32 @@ if ($a !== $b) {
 
 **[⬆ вернуться к началу](#Содержание)**
 
+### Оператор объединения с null
+
+Нулевое объединения - это новый оператор, [введенный в PHP 7](https://www.php.net/manual/en/migration70.new-features.php).
+Оператор объединения с null (`??`), являющийся синтаксическим сахаром для достаточно распространенного действия, когда
+совместно используются тернарный оператор и функция `isset()`. Он возвращает первый операнд, если он задан и не равен
+`NULL`, а в обратном случае возвращает второй операнд.
+
+**Не хорошо:**
+
+```php
+if (isset($_GET['name'])) {
+    $name = $_GET['name'];
+} elseif (isset($_POST['name'])) {
+    $name = $_POST['name'];
+} else {
+    $name = 'nobody';
+}
+```
+
+**Хорошо:**
+
+```php
+$name = $_GET['name'] ?? $_POST['name'] ?? 'nobody';
+```
+
+**[⬆ вернуться к началу](#Содержание)**
 
 ## Функции
 
@@ -788,7 +815,7 @@ function config(): array
 {
     return  [
         'foo' => 'bar',
-    ]
+    ];
 }
 ```
 
@@ -806,7 +833,8 @@ class Configuration
 
     public function get(string $key): ?string
     {
-        return isset($this->configuration[$key]) ? $this->configuration[$key] : null;
+        // null coalescing operator
+        return $this->configuration[$key] ?? null;
     }
 }
 ```
@@ -1297,9 +1325,9 @@ class Employee
         $this->email = $email;
     }
 
-    public function setTaxData(string $ssn, string $salary)
+    public function setTaxData(EmployeeTaxData $taxData)
     {
-        $this->taxData = new EmployeeTaxData($ssn, $salary);
+        $this->taxData = $taxData;
     }
 
     // ...
